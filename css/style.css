@@ -1,0 +1,56 @@
+* {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+.h-font {
+    font-family: 'Great Vibes', cursive;
+}
+/* Remove number input spinners */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+.custom-bg {
+    background-color: #2ec1ac;
+    border: 1px solid #2ec1ac;
+}
+.custom-bg:hover {
+    background-color: #279e96;
+    border-color: #279e96; 
+}
+.facility-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 250px; /* tổng chiều cao card */
+  display: flex;
+  flex-direction: column;
+}
+
+.facility-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.facility-img-container {
+  flex: 1; /* chiếm nửa trên */
+  height: 50%;
+  overflow: hidden;
+}
+
+.facility-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.facility-card h5 {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
