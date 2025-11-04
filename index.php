@@ -21,6 +21,14 @@
                 padding: 0 35px;
             }
         }
+        @media (max-width: 768px) {
+            iframe {
+                border-radius: 10px;
+            }
+            form {
+                padding: 0 10px;
+            }
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -481,11 +489,130 @@
 
     <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">Đánh giá từ khách hàng</h2>
 
-    <br><br><br>
-    <br><br><br>
+    <div class="container mt-5">
+        <div class="swiper swiper-testimonials">
+            <div class="swiper-wrapper mb-5">
+                
+                <div class="swiper-slide bg-white p-4">
+                    <div class="profile d-flex align-items-center mb-3">
+                        <img src="images/testimonials/1.jpg" width="30px">
+                        <h6 class="m-0 ms-2">Nguyễn Văn A</h6>
+                    </div>
+                    <p>Khách sạn rất tuyệt vời, dịch vụ chuyên nghiệp và nhân viên thân thiện. Tôi sẽ quay lại đây trong lần tới!</p>
+                    <div class="rating">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </div>
+                </div>
 
+                <div class="swiper-slide bg-white p-4">
+                    <div class="profile d-flex align-items-center mb-3">
+                        <img src="images/testimonials/1.jpg">
+                        <h6 class="m-0 ms-2">Nguyễn Văn A</h6>
+                    </div>
+                    <p>Khách sạn rất tuyệt vời, dịch vụ chuyên nghiệp và nhân viên thân thiện. Tôi sẽ quay lại đây trong lần tới!</p>
+                    <div class="rating">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </div>
+                </div>
+
+                <div class="swiper-slide bg-white p-4">
+                    <div class="profile d-flex align-items-center mb-3">
+                        <img src="images/testimonials/1.jpg">
+                        <h6 class="m-0 ms-2">Nguyễn Văn A</h6>
+                    </div>
+                    <p>Khách sạn rất tuyệt vời, dịch vụ chuyên nghiệp và nhân viên thân thiện. Tôi sẽ quay lại đây trong lần tới!</p>
+                    <div class="rating">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">Liên hệ với chúng tôi</h2>
+
+    <div class="container my-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6 col-12 mb-4">
+                <div class="ratio ratio-4x3">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125317.59141872505!2d106.57454237266471!3d11.025513529950134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d17273d88fa1%3A0x4ce77ac2d75e8e4c!2zVHAuIFRo4bunIEThuqd1IE3hu5l0LCBCw6xuaCBExrDGoW5nLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1762225777782!5m2!1svi!2s" 
+                        allowfullscreen
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Tên của bạn</label>
+                        <input type="text" class="form-control shadow-none">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email của bạn</label>
+                        <input type="email" class="form-control shadow-none">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số điện thoại của bạn</label>
+                        <input type="tel" class="form-control shadow-none">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tin nhắn</label>
+                        <textarea class="form-control shadow-none" rows="5"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-dark shadow-none">Gửi tin nhắn</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-white mt-5">
+        <div class="row">
+            <div class="col-lg-4 p-4">
+                <h3 class="h-font fw-bold fs-3 mb-2">T1 Hotel</h3>
+                <p>Khách sạn T1 cam kết mang đến cho bạn trải nghiệm nghỉ dưỡng tuyệt vời với dịch vụ chuyên nghiệp và tiện nghi hiện đại.</p>
+            </div>
+            <div class="col-lg-4 p-4">
+                <h5 class="mb-3">Liên kết nhanh</h5>
+                <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none">Trang chủ</a><br>
+                <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none">Đặt phòng</a><br>
+                <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none">Tiện nghi</a><br>
+                <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none">Liên hệ</a><br>
+                <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none">About</a>
+            </div>
+            <div class="col-lg-4 p-4">
+                <h5 class="mb-3">Theo dõi chúng tôi</h5>
+                <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none">
+                    <i class="bi bi-facebook"></i> Facebook
+                </a><br>
+                <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none">
+                    <i class="bi bi-twitter-x"></i> Twitter
+                </a><br>
+                <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none">
+                    <i class="bi bi-instagram"></i> Instagram
+                </a><br>
+                <a href="#" class="d-inline-block mb-2 text-dark text-decoration-none">
+                    <i class="bi bi-linkedin"></i> LinkedIn
+                </a>
+            </div>
+        </div>
+    </div>
     
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 
@@ -497,6 +624,39 @@
             autoplay: {
                 delay: 3500,
                 disableOnInteraction: false,
+            }
+        });
+
+        var swiper = new Swiper(".swiper-testimonials", {
+            effect: "coverflow",
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: "auto",
+            sliderPerView: "3",
+            loop: true,
+            coverflowEffect: {
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+            },
+            breakpoints: {
+                320: {
+                    slidesPerView: 1,
+                },
+                640: {
+                    slidesPerView: 1,
+                },
+                768: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                },
             }
         });
   </script>
