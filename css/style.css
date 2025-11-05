@@ -1,3 +1,7 @@
+:root {
+  --teal: #2ec1ac;
+  --teal-hover: #279e96;
+}
 * {
     font-family: 'Be Vietnam Pro', sans-serif;
 }
@@ -14,12 +18,12 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 .custom-bg {
-    background-color: #2ec1ac;
-    border: 1px solid #2ec1ac;
+    background-color: var(--teal);
+    border: 1px solid var(--teal);
 }
 .custom-bg:hover {
-    background-color: #279e96;
-    border-color: #279e96; 
+    background-color: var(--teal-hover);
+    border-color: var(--teal-hover); 
 }
 .facility-card {
   background: #fff;
@@ -53,4 +57,6 @@ input[type=number] {
   font-size: 1rem;
   font-weight: 500;
 }
+
+
 
