@@ -41,14 +41,15 @@
         if($stmt = mysqli_prepare($con, $sql)){
             mysqli_stmt_bind_param($stmt, $datatypes, ...$values);
             if (mysqli_stmt_execute($stmt)){
+                $res = mysqli_stmt_affected_rows($stmt);
                 mysqli_stmt_close($stmt);
-                return true;
+                return $res;
             } else {
                 mysqli_stmt_close($stmt);
-                return false;
+                die ("Execution failed: ".mysqli_error($con));
             }
         } else {
-            return false;
+            die ("Preparation failed: ".mysqli_error($con));
         }
     }
 ?>

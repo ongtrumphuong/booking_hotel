@@ -13,6 +13,7 @@
         #dashboard-menu {
             position: fixed;
             height: 100%;
+            z-index: 11;
         }
         @media screen and (max-width: 991px) {
             #dashboard-menu {
