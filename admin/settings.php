@@ -236,6 +236,49 @@
                     </div>
                 </div>
 
+                <!--Management Team section-->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3 justify-content-between">
+                            <h5 class="card-title m-0">Đội ngũ quản lý</h5>
+                            <button class="btn btn-dark btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#team-s">
+                                <i class="bi bi-plus-square"></i> Thêm
+                            </button>
+                        </div>
+                        
+                        <div class="row" id="team-data">
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--Management Team modal-->
+                <div class="modal fade" id="team-s" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form id="team_s_form">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Thêm thành viên</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Họ tên</label>
+                                        <input type="text" class="form-control shadow-none" id="member_name_inp" name="member_name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Hình ảnh</label>
+                                        <input type="file" class="form-control shadow-none" id="member_image_inp" name="member_image" accept=".webp, .jpg, .jpeg, .png" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="member_name.value='', member_image.value=''" class="btn text-secondary shadow-none" data-bs-dismiss="modal">Thoát</button>
+                                    <button type="submit" class="btn custom-bg text-white shadow-none">OK</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -250,6 +293,10 @@
         let site_about_inp = document.getElementById('site_about_inp');
 
         let contacts_s_form = document.getElementById('contacts_s_form');
+        
+        let team_s_form = document.getElementById('team_s_form');
+        let member_name_inp = document.getElementById('member_name_inp');
+        let member_image_inp = document.getElementById('member_image_inp');
 
         function get_general() {
             let site_title = document.getElementById('site_title');
@@ -350,18 +397,7 @@
 
         contacts_s_form.addEventListener('submit', function(e) {
             e.preventDefault();
-            upd_contacts(
-                document.getElementById('address_inp').value,
-                document.getElementById('gmap_inp').value,
-                document.getElementById('pn1_inp').value,
-                document.getElementById('pn2_inp').value,
-                document.getElementById('email_inp').value,
-                document.getElementById('fb_inp').value,
-                document.getElementById('insta_inp').value,
-                document.getElementById('tw_inp').value,
-                document.getElementById('ln_inp').value,
-                document.getElementById('iframe_inp').value
-            )
+            upd_contacts();
         });
 
         function upd_contacts() {
@@ -393,9 +429,73 @@
             xhr.send(data_str);
         }
 
+        team_s_form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            add_member();
+        });
+
+        function add_member() {
+            let data = new FormData();
+            data.append('name', member_name_inp.value);
+            data.append('image', member_image_inp.files[0]);
+            data.append('add_member', '');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/settings_crud.php", true);
+            xhr.onload = function() {
+                var myModal = document.getElementById('team-s');
+                var modal = bootstrap.Modal.getInstance(myModal);
+                modal.hide();
+                if (this.responseText == 'inv_img') {
+                    alert('error', 'Định dạng hình ảnh không hợp lệ');
+                }
+                else if (this.responseText == 'inv_size') {
+                    alert('error', 'Kích thước hình ảnh không hợp lệ');
+                }
+                else if (this.responseText == 'upd_failed') {
+                    alert('error', 'Tải hình ảnh thất bại. Vui lòng thử lại');
+                }
+                else {
+                    alert('success', 'Thêm thành viên mới thành công');
+                    member_name_inp.value = '';
+                    member_image_inp.value = '';
+                    get_members();
+                }
+            }
+            xhr.send(data);
+            
+        }
+
+        function get_members() {
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/settings_crud.php", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                document.getElementById('team-data').innerHTML = this.responseText;
+            }
+            xhr.send('get_members');
+        }
+
+        function rem_member(val) {
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/settings_crud.php", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (this.responseText == 1) {
+                    alert('success', 'Xóa thành viên thành công');
+                    get_members();
+                }
+                else {
+                    alert('error', 'Đã xảy ra lỗi');
+                }
+            }
+            xhr.send('rem_member=' + val);
+        }
+
         window.onload = function() {
             get_general();
             get_contacts();
+            get_members();
         }
 
     </script>
