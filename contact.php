@@ -22,42 +22,71 @@
         <div class="h-line bg-dark"></div>
         <p class="text-center mt-3">Trải nghiệm tiện nghi đẳng cấp tại T1 Hotel</p>
     </div>
-
+    
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-6 mb-5 px-4">
                 <div class="bg-white rounded shadow p-4">
-                    <iframe class="w-100 rounded mb-4" height="320px" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.7704107973123!2d106.67178467451959!3d10.98069455539375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d1085e2b1c37%3A0x73bfa5616464d0ee!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBUaOG7pyBE4bqndSBN4buZdA!5e0!3m2!1svi!2s!4v1762363368166!5m2!1svi!2s" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe class="w-100 rounded mb-4" height="320px" src="<?php echo $contact_r['iframe']; ?>" loading="lazy"></iframe>
                     
-                        <h5>Địa chỉ</h5>
-                    <a href="https://maps.app.goo.gl/aAwBTPCr8BkuNsbt9" target="_blank" class="d-inline-block text-decoration-none text-dark mb-2">
-                        <i class="bi bi-geo-alt-fill"></i> 06 Trần Văn Ơn, Phú Hoà, Thủ Dầu Một, Bình Dương, Việt Nam
+                    <h5>Địa chỉ</h5>
+                    <a href="<?php echo $contact_r['gmap']; ?>" target="_blank" class="d-inline-block text-decoration-none text-dark mb-2">
+                        <i class="bi bi-geo-alt-fill"></i> <?php echo $contact_r['address']; ?>
                     </a>
-                    
+
                     <h5 class="mt-4">Số điện thoại</h5>
-                    <a href="tel:+842743822288" class="d-inline-block text-decoration-none text-dark mb-2">
-                        <i class="bi bi-telephone-fill"></i> +84 274 3822 518
+                    <a href="tel:+<?php echo $contact_r['pn1']; ?>" class="d-inline-block text-decoration-none text-dark mb-2">
+                        <i class="bi bi-telephone-fill"></i> +<?php echo $contact_r['pn1']; ?>
                     </a>
                     
+                    <?php
+                        if($contact_r['pn2'] != '') {
+                            echo<<<data
+                                <br>
+                                <a href="tel:+$contact_r[pn2]" class="d-inline-block text-decoration-none text-dark">
+                                    <i class="bi bi-telephone-fill"></i> +$contact_r[pn2]
+                                </a>
+                            data;
+                        }
+                    ?>
+
                     <h5 class="mt-4">Email</h5>
-                    <a href="mailto: 2224801030012@student.tdmu.edu.vn" class="d-inline-block text-decoration-none text-dark">
-                        <i class="bi bi-envelope-fill"></i> 2224801030012@student.tdmu.edu.vn
+                    <a href="mailto: <?php echo $contact_r['email']; ?>" class="d-inline-block text-decoration-none text-dark">
+                        <i class="bi bi-envelope-fill"></i> <?php echo $contact_r['email']; ?>
                     </a>
 
                     <h5 class="mt-4">Theo dõi chúng tôi</h5>
                     <div>
-                        <a href="#" class="d-inline-block text-dark fs-5 me-3">
-                            <i class="bi bi-facebook"></i>
-                        </a>
-                        <a href="#" class="d-inline-block text-dark fs-5 me-3">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                        <a href="#" class="d-inline-block text-dark fs-5 me-3">
-                            <i class="bi bi-twitter"></i>
-                        </a>
-                        <a href="#" class="d-inline-block text-dark fs-5">
-                            <i class="bi bi-youtube"></i>
-                        </a>
+                        <?php
+                            if($contact_r['fb'] != '') {
+                                echo<<<data
+                                    <a href="$contact_r[fb]" target="_blank" class="d-inline-block text-dark fs-5 me-3">
+                                        <i class="bi bi-facebook"></i>
+                                    </a>
+                                data;
+                            }
+                            if($contact_r['insta'] != '') {
+                                echo<<<data
+                                    <a href="$contact_r[insta]" target="_blank" class="d-inline-block text-dark fs-5 me-3">
+                                        <i class="bi bi-instagram"></i>
+                                    </a>
+                                data;
+                            }
+                            if($contact_r['tw'] != '') {
+                                echo<<<data
+                                    <a href="$contact_r[tw]" target="_blank" class="d-inline-block text-dark fs-5 me-3">
+                                        <i class="bi bi-twitter"></i>
+                                    </a>
+                                data;
+                            }
+                            if($contact_r['ln'] != '') {
+                                echo<<<data
+                                    <a href="$contact_r[ln]" target="_blank" class="d-inline-block text-dark fs-5 me-3">
+                                        <i class="bi bi-linkedin"></i>
+                                    </a>
+                                data;
+                            }
+                        ?>
                     </div>
 
                 </div>

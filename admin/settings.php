@@ -186,11 +186,11 @@
                                                     <label class="form-label fw-bold">Số điện thoại (kèm mã quốc gia)</label>
                                                     <div class="input-group mb-3">
                                                         <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
-                                                        <input type="text" class="form-control shadow-none" id="pn1_inp" name="pn1" required>
+                                                        <input type="number" class="form-control shadow-none" id="pn1_inp" name="pn1" required>
                                                     </div>
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
-                                                        <input type="text" class="form-control shadow-none" id="pn2_inp" name="pn2">
+                                                        <input type="number" class="form-control shadow-none" id="pn2_inp" name="pn2">
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">

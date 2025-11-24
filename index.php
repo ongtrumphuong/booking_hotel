@@ -439,36 +439,47 @@
     <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">Liên hệ với chúng tôi</h2>
 
     <div class="container my-5">
-        <div class="row align-items-center">
-            <div class="col-lg-6 col-md-6 col-12 mb-4">
-                <div class="ratio ratio-4x3">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125317.59141872505!2d106.57454237266471!3d11.025513529950134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d17273d88fa1%3A0x4ce77ac2d75e8e4c!2zVHAuIFRo4bunIEThuqd1IE3hu5l0LCBCw6xuaCBExrDGoW5nLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1762225777782!5m2!1svi!2s" 
-                        allowfullscreen
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
-                </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 p-4 mb-lg-0 mb-3 bg-white rounded">
+                <iframe class="w-100 rounded" height="320px" src="<?php echo $contact_r['iframe']; ?>" loading="lazy"></iframe>
             </div>
-            <div class="col-lg-6 col-md-6 col-12">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Tên của bạn</label>
-                        <input type="text" class="form-control shadow-none">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email của bạn</label>
-                        <input type="email" class="form-control shadow-none">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Số điện thoại của bạn</label>
-                        <input type="tel" class="form-control shadow-none">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tin nhắn</label>
-                        <textarea class="form-control shadow-none" rows="5"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-dark shadow-none">Gửi tin nhắn</button>
-                </form>
+            <div class="col-lg-4 col-md-4">
+                <div class="bg-white p-4 rounded mb-4">
+                    <h5 class="mb-3">Liên hệ thông tin</h5>
+                    <a href="tel: +<?php echo $contact_r['pn1']; ?>" class="d-inline-block mb-2 text-decoration-none text-dark">
+                        <i class="bi bi-telephone-fill"></i> +<?php echo $contact_r['pn1']; ?>
+                    </a>
+                    <br>
+                    <?php
+                        if($contact_r['pn2'] != ''){
+                            echo<<<data
+                                <a href="tel: $contact_r[pn2]" class="d-inline-block text-decoration-none text-dark">
+                                    <i class="bi bi-telephone-fill"></i> +$contact_r[pn2]
+                                </a>
+                            data;
+                        }
+                    ?>
+
+                    
+                </div>
+                <div class="bg-white p-4 rounded mb-4">
+                    <h5 class="mb-3">Theo dõi chúng tôi</h5>
+                    <a href="<?php echo $contact_r['fb']; ?>" class="d-inline-block mb-3 text-decoration-none text-dark">
+                        <i class="bi bi-facebook me-1"></i> Facebook
+                    </a>                   
+                    <br>
+                    <a href="<?php echo $contact_r['insta']; ?>" class="d-inline-block mb-3 text-decoration-none text-dark">
+                        <i class="bi bi-instagram me-1"></i> Instagram
+                    </a>
+                    <br>
+                    <a href="<?php echo $contact_r['tw']; ?>" class="d-inline-block text-decoration-none text-dark">
+                        <i class="bi bi-twitter me-1"></i> Twitter
+                    </a>
+                    <br>
+                    <a href="<?php echo $contact_r['ln']; ?>" class="d-inline-block mt-3 text-decoration-none text-dark">
+                        <i class="bi bi-linkedin me-1"></i> LinkedIn
+                    </a>
+                </div>
             </div>
         </div>
     </div>
