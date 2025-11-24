@@ -83,34 +83,18 @@
     <div class="container px-4">
           <div class="swiper mySwiper">
             <div class="swiper-wrapper mb-5">
-                <div class="swiper-slide bg-white rounded overflow-hidden text-center">
-                    <img src="images/about/team1.jpg" class="w-100">
-                    <h5 class="text-center">Nguyễn Văn A</h5>
-                </div>
-                <div class="swiper-slide bg-white rounded overflow-hidden text-center">
-                    <img src="images/about/team1.jpg" class="w-100">
-                    <h5 class="text-center">Nguyễn Văn A</h5>
-                </div>
-                <div class="swiper-slide bg-white rounded overflow-hidden text-center">
-                    <img src="images/about/team1.jpg" class="w-100">
-                    <h5 class="text-center">Nguyễn Văn A</h5>
-                </div>
-                <div class="swiper-slide bg-white rounded overflow-hidden text-center">
-                    <img src="images/about/team1.jpg" class="w-100">
-                    <h5 class="text-center">Nguyễn Văn A</h5>
-                </div>
-                <div class="swiper-slide bg-white rounded overflow-hidden text-center">
-                    <img src="images/about/team1.jpg" class="w-100">
-                    <h5 class="text-center">Nguyễn Văn A</h5>
-                </div>
-                <div class="swiper-slide bg-white rounded overflow-hidden text-center">
-                    <img src="images/about/team1.jpg" class="w-100">
-                    <h5 class="text-center">Nguyễn Văn A</h5>
-                </div>
-                <div class="swiper-slide bg-white rounded overflow-hidden text-center">
-                    <img src="images/about/team1.jpg" class="w-100">
-                    <h5 class="text-center">Nguyễn Văn A</h5>
-                </div>
+                <?php
+                    $about_r = selectAll('team_details');
+                    $path = ABOUT_IMG_PATH;
+                    while($row = mysqli_fetch_assoc($about_r)){
+                        echo<<<data
+                            <div class="swiper-slide bg-white rounded overflow-hidden text-center">
+                                <img src="$path$row[image]" class="w-100">
+                                <h5 class="text-center">$row[name]</h5>
+                            </div>
+                        data;
+                    }
+                ?>
             </div>
             <div class="swiper-pagination"></div>
         </div>
