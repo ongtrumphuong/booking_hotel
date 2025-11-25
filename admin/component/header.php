@@ -19,7 +19,7 @@
                         <a class="nav-link text-white" href="rooms.php">Phòng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="booking.php">Đặt phòng</a>
+                        <a class="nav-link text-white" href="user_queries.php">Lời nhắn từ khách hàng</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="slider.php">Slider</a>

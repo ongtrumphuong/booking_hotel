@@ -58,5 +58,11 @@ input[type=number] {
   font-weight: 500;
 }
 
+.custom-alert {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+}
+
 
 

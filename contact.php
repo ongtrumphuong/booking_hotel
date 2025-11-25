@@ -94,32 +94,48 @@
 
             <div class="col-lg-6 col-md-6 mb-5 px-4">
                 <div class="bg-white rounded shadow p-4">
-                    <form>
+                    <form method="POST">
                         <h5>Gửi tin nhắn cho chúng tôi</h5>
                         <div class="mt-3">
                             <label class="form-label">Tên của bạn</label>
-                            <input type="text" class="form-control shadow-none">
+                            <input name="name" required type="text" class="form-control shadow-none">
                         </div>
                         <div class="mt-3">
                             <label class="form-label">Email của bạn</label>
-                            <input type="email" class="form-control shadow-none">
+                            <input name="email" required type="email" class="form-control shadow-none">
                         </div>
                         <div class="mt-3">
-                            <label class="form-label">Số điện thoại</label>
-                            <input type="tel" class="form-control shadow-none">
+                            <label class="form-label">Tiêu đề</label>
+                            <input name="subject" required type="text" class="form-control shadow-none">
                         </div>
                         <div class="mt-3">
                             <label class="form-label">Tin nhắn</label>
-                            <textarea class="form-control shadow-none" rows="5" style="resize: none;"></textarea>
+                            <textarea name="message" required class="form-control shadow-none" rows="5" style="resize: none;"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-dark shadow-none mt-3">Gửi tin nhắn</button>
+                        <button type="submit" name="send" class="btn btn-dark shadow-none mt-3">Gửi tin nhắn</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
+    <?php
+        if(isset($_POST['send'])) {
+            $frm_data = filteration($_POST);
 
+            $query = "INSERT INTO `user_queries`(`name`, `email`, `subject`, `message`) VALUES (?,?,?,?)";
+            $values = [$frm_data['name'], $frm_data['email'], $frm_data['subject'], $frm_data['message']];
+
+            $res = insert($query, $values, 'ssss');
+
+            if($res == 1) {
+                alert('success', 'Tin nhắn của bạn đã được gửi thành công!');
+            }
+            else {
+                alert('error', 'Gửi tin nhắn thất bại! Vui lòng thử lại sau.');
+            }
+        }
+    ?>
 
     <?php require('component/footer.php'); ?>
     
