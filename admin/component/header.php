@@ -22,7 +22,7 @@
                         <a class="nav-link text-white" href="booking.php">Đặt phòng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="users.php">Người dùng</a>
+                        <a class="nav-link text-white" href="slider.php">Slider</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="settings.php">Cài đặt</a>

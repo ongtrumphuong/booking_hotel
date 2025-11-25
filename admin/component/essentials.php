@@ -1,9 +1,12 @@
 <?php
     define('SITE_URL', 'http://127.0.0.1/hotel_project/');
     define('ABOUT_IMG_PATH', SITE_URL. 'images/about/');
+    define('SLIDER_IMG_PATH', SITE_URL. 'images/slider/');
 
     define('UPLOAD_IMAGE_PATH', $_SERVER['DOCUMENT_ROOT']. '/hotel_project/images/');
     define('ABOUT_FOLDER', 'about/');
+    define('SLIDER_FOLDER', 'slider/');
+
 
     function adminLogin(){
         session_start();
