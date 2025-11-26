@@ -30,67 +30,25 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-md-6 mb-5 px-4">
-                <div class="bg-white rounded shadow border-top border-4 border-dark pop overflow-hidden h-100">
-                    <!-- Ảnh nằm tràn trên và hai bên -->
-                    <img src="images/facilities/pool.png" class="w-100 rounded-top" style="height: 200px; object-fit: cover;">
-                    <!-- Nội dung có padding -->
-                    <div class="p-4 text-center">
-                        <h5 class="mb-2">Hồ bơi vô cực</h5>
-                        <p>Thư giãn và tận hưởng khung cảnh tuyệt đẹp từ hồ bơi vô cực trên tầng thượng của chúng tôi.</p>
-                    </div>
-                </div>
-            </div>
+            <?php
+                $res = selectAll('facilities');
+                $path = FACILITIES_IMG_PATH;
 
-            <div class="col-lg-4 col-md-6 mb-5 px-4">
-                <div class="bg-white rounded shadow border-top border-4 border-dark pop overflow- h-100">
-                    <img src="images/facilities/spa.png" class="w-100 rounded-top" style="height: 200px; object-fit: cover;">
-                    <div class="p-4 text-center">
-                        <h5 class="mb-2">Spa & Wellness</h5>
-                        <p>Thư giãn và tái tạo năng lượng với các liệu pháp spa chuyên nghiệp và không gian yên tĩnh.</p>
+                while($row = mysqli_fetch_assoc($res)){
+                    echo<<<data
+                    <div class="col-lg-4 col-md-6 mb-5 px-4">
+                        <div class="bg-white rounded shadow border-top border-4 border-dark pop overflow-hidden h-100">
+                            <img src="$path$row[image]" class="w-100 rounded-top" style="height: 200px; object-fit: cover;">
+                            <div class="p-4 text-center">
+                                <h5 class="mb-2">$row[name]</h5>
+                                <p>$row[description]</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-5 px-4">
-                <div class="bg-white rounded shadow border-top border-4 border-dark pop overflow-hidden h-100">
-                    <img src="images/facilities/gym.png" class="w-100 rounded-top" style="height: 200px; object-fit: cover;">
-                    <div class="p-4 text-center">
-                        <h5 class="mb-2">Phòng tập gym</h5>
-                        <p>Duy trì thói quen tập luyện của bạn với trang thiết bị hiện đại tại phòng tập gym của chúng tôi.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-5 px-4">
-                <div class="bg-white rounded shadow border-top border-4 border-dark pop overflow-hidden h-100">
-                    <img src="images/facilities/restaurant.png" class="w-100 rounded-top" style="height: 200px; object-fit: cover;">
-                    <div class="p-4 text-center">
-                        <h5 class="mb-2">Nhà hàng 5 sao</h5>
-                        <p>Thưởng thức ẩm thực đa dạng và tinh tế tại nhà hàng sang trọng của chúng tôi.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-5 px-4">
-                <div class="bg-white rounded shadow border-top border-4 border-dark pop overflow-hidden h-100">
-                    <img src="images/facilities/conference.png" class="w-100 rounded-top" style="height: 200px; object-fit: cover;">
-                    <div class="p-4 text-center">
-                        <h5 class="mb-2">Phòng hội nghị</h5>
-                        <p>Tổ chức sự kiện và hội thảo chuyên nghiệp với các phòng hội nghị hiện đại và tiện nghi.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-5 px-4">
-                <div class="bg-white rounded shadow border-top border-4 border-dark pop overflow-hidden h-100">
-                    <img src="images/facilities/lounge.png" class="w-100 rounded-top" style="height: 200px; object-fit: cover;">
-                    <div class="p-4 text-center">
-                        <h5 class="mb-2">Lounge sang trọng</h5>
-                        <p>Thư giãn và tận hưởng không gian sang trọng tại lounge của chúng tôi với đồ uống và dịch vụ cao cấp.</p>
-                    </div>
-                </div>
-            </div>
+                    data;
+                }
+            ?>
+            
 
         </div>
     </div>
