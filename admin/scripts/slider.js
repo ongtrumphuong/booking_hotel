@@ -33,7 +33,6 @@ function add_image() {
         }
     }
     xhr.send(data);
-    
 }
 
 function get_slider() {
