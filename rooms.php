@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T1 Hotel - Đặt Phòng</title>
     <?php require('component/links.php'); ?>
+    <title><?php echo $settings_r['site_title'] ?> - Đặt phòng</title>
     <style>
         .h-line {
             width: 110px;

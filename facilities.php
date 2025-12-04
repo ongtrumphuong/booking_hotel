@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>T1 Hotel - Cơ sở vật chất</title>
     <?php require('component/links.php'); ?>
+    <title><?php echo $settings_r['site_title'] ?> - Cơ sở vật chất</title>
     <style>
         .h-line {
             width: 110px;
