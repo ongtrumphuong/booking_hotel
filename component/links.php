@@ -4,6 +4,10 @@
 <link rel="stylesheet" href="css/style.css">
 
 <?php
+
+    session_start();
+    date_default_timezone_set("Asia/Ho_Chi_Minh");
+
     require('admin/component/db_config.php');
     require('admin/component/essentials.php');
     

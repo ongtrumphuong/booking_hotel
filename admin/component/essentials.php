@@ -4,6 +4,7 @@
     define('SLIDER_IMG_PATH', SITE_URL. 'images/slider/');
     define('FACILITIES_IMG_PATH', SITE_URL. 'images/facilities/');
     define('ROOMS_IMG_PATH', SITE_URL. 'images/rooms/');
+    define('USERS_IMG_PATH', SITE_URL. 'images/users/');
 
     define('UPLOAD_IMAGE_PATH', $_SERVER['DOCUMENT_ROOT']. '/hotel_project/images/');
     define('ABOUT_FOLDER', 'about/');
@@ -13,6 +14,8 @@
     define('USERS_FOLDER', 'users/');
 
     define('SENDGRID_API_KEY', "your_api_key");
+    define('SENDGRID_EMAIL', "phuongpd.13a2bb.1920@gmail.com");
+    define('SENDGRID_NAME', "T1 Hotel Support");
 
 
     function adminLogin(){

@@ -23,12 +23,34 @@
                 </li>
             </ul>
             <div class="d-flex">
-                <button type="button" class="btn btn-outline-dark shadow-none me-lg-3 me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
-                    Đăng nhập
-                </button>
-                <button type="button" class="btn btn-outline-dark shadow-none" data-bs-toggle="modal" data-bs-target="#registerModal">
-                    Đăng ký
-                </button>
+                <?php
+                    if(isset($_SESSION['login']) && $_SESSION['login'] == true) {
+                        $path = USERS_IMG_PATH;
+                        echo<<<data
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline-dark shadow-none dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                                    <img src="$path$_SESSION[uPic]" style="width: 25px; height: 25px;" class="me-1">
+                                    $_SESSION[uName]
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-lg-end">
+                                    <li><a class="dropdown-item" href="profile.php">Thông tin</a></li>
+                                    <li><a class="dropdown-item" href="bookings.php">Đặt chỗ</a></li>
+                                    <li><a class="dropdown-item" href="logout.php">Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        data;
+                    }
+                    else {
+                        echo<<<data
+                            <button type="button" class="btn btn-outline-dark shadow-none me-lg-3 me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                Đăng nhập
+                            </button>
+                            <button type="button" class="btn btn-outline-dark shadow-none" data-bs-toggle="modal" data-bs-target="#registerModal">
+                                Đăng ký
+                            </button>
+                        data;
+                    }
+                ?>
             </div>
         </div>
     </div>
@@ -37,7 +59,7 @@
 <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="">
+            <form id="login-form">
                 <div class="modal-header">
                     <h5 class="modal-title d-flex align-items-center">
                         <i class="bi bi-person-circle fs-3 me-2"></i> Đăng nhập
@@ -46,16 +68,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control shadow-none">
+                        <label for="email" class="form-label">Email / Số điện thoại</label>
+                        <input type="text" name="email_mob" required class="form-control shadow-none">
                     </div>
                     <div class="mb-4">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control shadow-none">
+                        <label for="password" class="form-label">Mật khẩu</label>
+                        <input type="password" name="pass" required class="form-control shadow-none">
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <button type="submit" class="btn btn-dark shadow-none">Login</button>
-                        <a href="javascript: void(0)" class="text-secondary text-decoration-none">Forgot Password?</a>
+                        <button type="submit" class="btn btn-dark shadow-none">Đăng nhập</button>
+                        <button type="button" class="btn text-secondary text-decoration-none shadow-none p-0" data-bs-toggle="modal" data-bs-target="#forgotModal" data-bs-dismiss="modal">
+                            Quên mật khẩu?
+                        </button>
                     </div>
                 </div>
             </form>
@@ -124,6 +148,35 @@
                     <div class="text-center">
                         <button type="submit" class="btn btn-dark shadow-none">Đăng ký</button>
                     </div> 
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="forgotModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="forgot-form">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex align-items-center">
+                        <i class="bi bi-person-circle fs-3 me-2"></i> Quên mật khẩu
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
+                        Chú ý: Sẽ có 1 đường link được gửi về mail của bạn. Hãy nhấn vào đó để đặt lại mật khẩu! 
+                    </span>
+                    <div class="mb-4">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" required class="form-control shadow-none">
+                    </div>
+                    <div class="mb-2 text-end">
+                        <button type="button" class="btn shadow-none p-0 me-2" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">
+                            Thoát
+                        </button>
+                        <button type="submit" class="btn btn-dark shadow-none">Gửi link</button>
+                    </div>
                 </div>
             </form>
         </div>

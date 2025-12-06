@@ -126,5 +126,87 @@
         xhr.send(data);
     });
 
+    let login_form = document.getElementById('login-form');
+
+    login_form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        let data = new FormData();
+
+        data.append('email_mob',login_form.elements['email_mob'].value);
+        data.append('pass',login_form.elements['pass'].value);
+        data.append('login','');
+
+        var myModal = document.getElementById('loginModal');
+        var modal = bootstrap.Modal.getInstance(myModal);
+        modal.hide();
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST","ajax/login_register.php",true);
+
+        xhr.onload = function(){
+            if(this.responseText == 'inv_email_mob'){
+                alert('error',"Email hoặc số điện thoại không hợp lệ!");
+            }
+            else if(this.responseText == 'not_verified') {
+                alert('error',"Email chưa được xác thực!");
+            }
+            else if(this.responseText == 'inactive') {
+                alert('error',"Tài khoản bị cấm! Vui lòng liên hệ với bộ phận chăm sóc khách hàng để được hỗ trợ!");
+            }
+            else if(this.responseText == 'invalid_pass') {
+                alert('error',"Mật khẩu không chính xác!");
+            }
+            else {
+                window.location = window.location.pathname;
+            }
+        }
+        xhr.send(data);
+    });
+
+    let forgot_form = document.getElementById('forgot-form');
+
+    forgot_form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        let data = new FormData();
+
+        data.append('email',forgot_form.elements['email'].value);
+        data.append('forgot_pass','');
+
+        var myModal = document.getElementById('forgotModal');
+        var modal = bootstrap.Modal.getInstance(myModal);
+        modal.hide();
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST","ajax/login_register.php",true);
+
+        xhr.onload = function(){
+            if(this.responseText == 'inv_email'){
+                alert('error',"Email không hợp lệ!");
+            }
+            else if(this.responseText == 'not_verified') {
+                alert('error',"Email chưa được xác thực! Vui lòng liên hệ với bộ phận chăm sóc khách hàng để được hỗ trợ!");
+            }
+            else if(this.responseText == 'inactive') {
+                alert('error',"Tài khoản bị cấm! Vui lòng liên hệ với bộ phận chăm sóc khách hàng để được hỗ trợ!");
+            }
+            else if(this.responseText == 'mail_failed') {
+                alert('error',"Không thể gửi email. Vui lòng thử lại sau ít phút!");
+            }
+            else if(this.responseText == 'upd_failed') {
+                alert('error',"Đặt lại mật khẩu thất bại. Vui lòng thử lại sau ít phút!");
+            }
+            else {
+                alert('success',"Link đặt lại mật khẩu đã được gửi qua mail");
+                forgot_form.reset();
+            }
+        }
+        
+        xhr.send(data);
+    });
+
+    
+
     setActive();
 </script>
