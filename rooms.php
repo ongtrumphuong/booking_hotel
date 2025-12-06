@@ -114,6 +114,12 @@
                             $room_thumb = ROOMS_IMG_PATH.$thumb_res['image'];
                         }
 
+                        $book_btn = "";
+
+                        if(!$settings_r['shutdown']) {
+                            $book_btn = "<a href='#' class='btn btn-sm w-100 text-white custom-bg shadow-none mb-2'>Đặt phòng ngay</a>";
+                        }
+
                         echo<<<data
                             <div class="card mb-4 shadow border-0">
                                 <div class="row g-0 p-3 align-items-center">
@@ -142,7 +148,7 @@
                                     </div>
                                     <div class="col-md-2 text-center">
                                         <h6 class="mb-4">VND $room_data[price] <br> cho 1 đêm</h6>
-                                        <a href="#" class="btn btn-sm w-100 text-white custom-bg shadow-none mb-2">Đặt phòng ngay</a>
+                                        $book_btn
                                         <a href="room_details.php?id=$room_data[id]" class="btn btn-sm w-100 btn-outline-dark shadow-none">Xem chi tiết</a>
                                     </div>
                                 </div>
