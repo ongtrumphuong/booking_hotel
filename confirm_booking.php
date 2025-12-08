@@ -146,7 +146,51 @@
         let pay_info = document.getElementById('pay_info');
 
         function check_availability(){
+            let checkin_val = booking_form.elements['checkin'].value;
+            let checkout_val = booking_form.elements['checkout'].value;
+            
+            booking_form.elements['pay_now'].setAttribute('disabled',true);
 
+            if(checkin_val != '' && checkout_val != '') {
+                pay_info.classList.add('d-none');
+                pay_info.classList.replace('text-dark','text-danger');
+                info_loader.classList.remove('d-none');
+
+                let data = new FormData();
+
+                data.append('check_availability','');
+                data.append('check_in',checkin_val);
+                data.append('check_out',checkout_val);
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST","ajax/confirm_booking.php",true);
+
+                xhr.onload = function(){
+                    let data = JSON.parse(this.responseText);
+
+                    if(data.status == 'check_in_out_equal'){
+                        pay_info.innerText = "Bạn không thể trả phòng vào cùng ngày!";
+                    }
+                    else if(data.status == 'check_out_earlier'){
+                        pay_info.innerText = "Ngày trả phòng sớm hơn ngày nhận phòng!";
+                    }
+                    else if(data.status == 'check_in_earlier'){
+                        pay_info.innerText = "Ngày nhận phòng sớm hơn ngày hôm nay!";
+                    }
+                    else if(data.status == 'unavailable'){
+                        pay_info.innerText = "Không còn phòng cho ngày nhận phòng này!";
+                    }
+                    else{
+                        pay_info.innerHTML = "Số ngày: "+data.days+"<br>Tổng số tiền phải trả: VNĐ "+data.payment;
+                        pay_info.classList.replace('text-danger','text-dark');
+                        booking_form.elements['pay_now'].removeAttribute('disabled');
+                    }
+
+                    pay_info.classList.remove('d-none');
+                    info_loader.classList.add('d-none');
+                }
+                xhr.send(data);
+            }
         }
     </script>
     
