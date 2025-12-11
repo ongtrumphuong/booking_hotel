@@ -10,6 +10,9 @@
     }
 
     function filteration($data){
+        if (!is_array($data)) {
+            return []; // Ngăn lỗi nếu $data không phải là mảng
+        }
         foreach($data as $key => $value){
             $value = trim($value);
             $value = stripslashes($value);

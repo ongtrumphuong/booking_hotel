@@ -95,7 +95,7 @@
             <div class="col-lg-5 col-md-12 px-4">
                 <div class="card mb-4 border-0 shadow-sm rounded-3">
                     <div class="card-body">
-                        <form action="#" id="booking_form">
+                        <form action="vnpay_process.php" method="POST" id="booking_form">
                             <h6 class="mb-3">Chi tiết đặt phòng</h6>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -125,7 +125,7 @@
 
                                     <h6 class="mb-3 text-danger" id="pay_info">Vui lòng chọn ngày nhận và trả phòng !</h6>
 
-                                    <button name="pay_now" class="btn w-100 text-white custom-bg shadow-none mb-1" disabled>Thanh toán ngay</button>
+                                    <button name="submit_payment" type="submit" class="btn w-100 text-white custom-bg shadow-none mb-1" disabled>Thanh toán ngay</button>
                                 </div>
                             </div>
                         </form>
@@ -149,7 +149,7 @@
             let checkin_val = booking_form.elements['checkin'].value;
             let checkout_val = booking_form.elements['checkout'].value;
             
-            booking_form.elements['pay_now'].setAttribute('disabled',true);
+            booking_form.elements['submit_payment'].setAttribute('disabled',true);
 
             if(checkin_val != '' && checkout_val != '') {
                 pay_info.classList.add('d-none');
@@ -183,7 +183,7 @@
                     else{
                         pay_info.innerHTML = "Số ngày: "+data.days+"<br>Tổng số tiền phải trả: VNĐ "+data.payment;
                         pay_info.classList.replace('text-danger','text-dark');
-                        booking_form.elements['pay_now'].removeAttribute('disabled');
+                        booking_form.elements['submit_payment'].removeAttribute('disabled');
                     }
 
                     pay_info.classList.remove('d-none');
