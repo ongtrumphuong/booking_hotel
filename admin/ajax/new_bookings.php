@@ -53,7 +53,7 @@
                         <b>Ngày:</b> $date
                     </td>
                     <td>
-                        <button type='button' onclick='assign_room($data[booking_id])' class='btn text-white btn-sm fw-bold custom-bg shadow-none' data-bs-toggle='modal' data-bs-target='#assign-room'>
+                        <button type='button' onclick='assign_room($data[booking_id])' class='btn btn-sm btn-custom-dark fw-bold shadow-none' data-bs-toggle='modal' data-bs-target='#assign-room'>
                             <i class='bi bi-check2-square'></i> Xếp phòng
                         </button>
                         <br>
@@ -75,12 +75,12 @@
 
         $query = "UPDATE `booking_order` bo INNER JOIN `booking_details` bd
             ON bo.booking_id = bd.booking_id
-            SET bo.arrival = ?, bd.room_no = ?
+            SET bo.arrival = ?, bo.rate_review = ?, bd.room_no = ?
             WHERE bo.booking_id = ?";
         
-        $values = [1,$frm_data['room_no'],$frm_data['booking_id']];
+        $values = [1,0,$frm_data['room_no'],$frm_data['booking_id']];
 
-        $res = update($query,$values,'isi');
+        $res = update($query,$values,'iisi');
 
         echo ($res == 2) ? 1 : 0;
     }

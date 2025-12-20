@@ -23,12 +23,45 @@
         $email->setSubject($subject);
         $email->addTo($uemail);
 
-        $email->addContent(
-            "text/html", 
-            "Nhấn vào đây để $content: <br>
-                <a href='".SITE_URL."$page?$type&email=$uemail&token=$token"."'>Nhấn vào đây</a>    
-            "
-        );
+        $full_link = SITE_URL . "$page?$type&email=$uemail&token=$token";
+
+        $email_html = "
+            <div style='background-color: #f3f4f6; padding: 40px 0; font-family: Arial, sans-serif; line-height: 1.6;'>
+                <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);'>
+                    
+                    <div style='background-color: #111827; padding: 30px; text-align: center;'>
+                        <h2 style='color: #ffffff; margin: 0; font-size: 24px; font-weight: 600;'>XÁC NHẬN YÊU CẦU</h2>
+                    </div>
+
+                    <div style='padding: 40px 30px; text-align: center; color: #374151;'>
+                        <h3 style='margin-top: 0; color: #111827;'>Xin chào,</h3>
+                        <p style='margin-bottom: 25px; font-size: 16px;'>
+                            Bạn vừa thực hiện yêu cầu: <strong style='color: #111827;'>$content</strong>.<br>
+                            Vui lòng nhấn vào nút bên dưới để hoàn tất quá trình này.
+                        </p>
+
+                        <a href='$full_link' style='display: inline-block; background-color: #111827; color: #ffffff; text-decoration: none; padding: 14px 30px; border-radius: 50px; font-weight: bold; font-size: 16px; margin: 10px 0 25px 0; box-shadow: 0 4px 6px rgba(17, 24, 39, 0.2);'>
+                            Xác nhận ngay
+                        </a>
+
+                        <p style='font-size: 14px; color: #6b7280; margin-top: 20px;'>
+                            Nếu nút bấm không hoạt động, hãy copy đường dẫn sau và dán vào trình duyệt:
+                        </p>
+                        <p style='font-size: 13px; color: #3b82f6; word-break: break-all;'>
+                            <a href='$full_link' style='color: #3b82f6;'>$full_link</a>
+                        </p>
+                    </div>
+
+                    <div style='background-color: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #9ca3af; border-top: 1px solid #e5e7eb;'>
+                        <p style='margin: 0;'>Đây là email tự động, vui lòng không trả lời.</p>
+                        <p style='margin: 5px 0 0;'>&copy; 2025 Website Management System</p>
+                    </div>
+                </div>
+            </div>
+        ";
+
+        $email->addContent("text/html", $email_html);
+
         $sendgrid = new \SendGrid(SENDGRID_API_KEY);
 
         try {

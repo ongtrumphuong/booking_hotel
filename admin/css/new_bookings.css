@@ -1,0 +1,127 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f3f4f6;
+}
+
+/* --- Layout --- */
+#dashboard-menu {
+    position: fixed;
+    height: 100%;
+    z-index: 11;
+}
+@media screen and (max-width: 991px) {
+    #dashboard-menu {
+        height: auto;
+        width: 100%;
+    }
+    #main-content {
+        margin-top: 60px;
+    }
+}
+
+/* --- Modern Card Style --- */
+.dashboard-card {
+    background: #fff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+.dashboard-card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* --- Inputs --- */
+.search-input {
+    border-radius: 50px;
+    padding: 10px 20px;
+    border: 1px solid #d1d5db;
+    transition: all 0.3s;
+}
+.search-input:focus {
+    border-color: #111827;
+    box-shadow: 0 0 0 0.2rem rgba(17, 24, 39, 0.1);
+}
+
+/* --- Buttons --- */
+.btn-custom-dark {
+    background-color: #111827;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    transition: 0.3s;
+}
+.btn-custom-dark:hover {
+    background-color: #374151;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* --- Tables --- */
+.custom-table thead th {
+    background-color: #111827;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    padding: 12px;
+    white-space: nowrap;
+}
+.custom-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+.custom-table td {
+    vertical-align: middle;
+    font-size: 0.95rem;
+    color: #4b5563;
+    padding: 10px;
+}
+
+/* --- Modals --- */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.modal-header {
+    border-bottom: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    border-radius: 12px 12px 0 0;
+}
+.modal-title {
+    font-weight: 600;
+    color: #111827;
+}
+
+/* --- Inputs --- */
+.form-control:focus {
+    border-color: #111827;
+    box-shadow: none;
+}
+
+.custom-alert {
+    position: fixed;
+    top: 80px; /* Khoảng cách từ trên xuống (để tránh đè lên Header) */
+    right: 25px; /* Khoảng cách từ phải vào */
+    z-index: 9999; /* Đảm bảo nó nổi lên trên cùng, cao hơn modal và menu */
+    min-width: 300px; /* Độ rộng tối thiểu cho đẹp */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Đổ bóng cho nổi bật */
+}
+
+/* Hiệu ứng trượt vào */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

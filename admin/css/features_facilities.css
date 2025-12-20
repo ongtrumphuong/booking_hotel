@@ -1,0 +1,97 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f3f4f6;
+}
+
+/* --- Layout --- */
+#dashboard-menu {
+    position: fixed;
+    height: 100%;
+    z-index: 11;
+}
+@media screen and (max-width: 991px) {
+    #dashboard-menu {
+        height: auto;
+        width: 100%;
+    }
+    #main-content {
+        margin-top: 60px;
+    }
+}
+
+/* --- Modern Card Style --- */
+.dashboard-card {
+    background: #fff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+.dashboard-card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.card-header-title {
+    color: #111827;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* --- Buttons --- */
+.btn-custom-dark {
+    background-color: #111827;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    transition: 0.3s;
+}
+.btn-custom-dark:hover {
+    background-color: #374151;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* --- Tables --- */
+.custom-table thead th {
+    background-color: #111827;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    padding: 12px;
+}
+.custom-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+.custom-table td {
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+
+/* --- Modals --- */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.modal-header {
+    border-bottom: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    border-radius: 12px 12px 0 0;
+}
+.modal-title {
+    font-weight: 600;
+    color: #111827;
+}
+
+/* --- Inputs --- */
+.form-control:focus {
+    border-color: #111827;
+    box-shadow: none;
+}

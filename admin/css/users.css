@@ -1,0 +1,76 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f3f4f6;
+}
+
+/* --- Layout --- */
+#dashboard-menu {
+    position: fixed;
+    height: 100%;
+    z-index: 11;
+}
+@media screen and (max-width: 991px) {
+    #dashboard-menu {
+        height: auto;
+        width: 100%;
+    }
+    #main-content {
+        margin-top: 60px;
+    }
+}
+
+/* --- Modern Card Style --- */
+.dashboard-card {
+    background: #fff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+.dashboard-card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* --- Inputs --- */
+.search-input {
+    border-radius: 50px;
+    padding: 10px 20px;
+    border: 1px solid #d1d5db;
+    transition: all 0.3s;
+}
+.search-input:focus {
+    border-color: #111827;
+    box-shadow: 0 0 0 0.2rem rgba(17, 24, 39, 0.1);
+}
+
+/* --- Tables --- */
+.custom-table thead th {
+    background-color: #111827;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    padding: 15px 10px;
+    white-space: nowrap;
+}
+.custom-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+.custom-table td {
+    vertical-align: middle;
+    font-size: 0.95rem;
+    color: #4b5563;
+    padding: 10px;
+}
+
+/* --- Badges (Trạng thái) --- */
+.badge {
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 6px;
+}

@@ -136,9 +136,6 @@
         </div>
     </div>
     
-
-
-
     <?php require('component/footer.php'); ?>
     <script>
         let booking_form = document.getElementById('booking_form');

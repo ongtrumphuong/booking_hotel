@@ -1,44 +1,337 @@
 <?php 
     require('component/essentials.php');
+    require('component/db_config.php');
     adminLogin();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Quản Trị</title>
+    <title>Trang Quản Trị - Admin Dashboard</title>
     <?php require('component/links.php'); ?>
-    <style>
-        #dashboard-menu {
-            position: fixed;
-            height: 100%;
-            z-index: 11;
-        }
-        @media screen and (max-width: 991px) {
-            #dashboard-menu {
-                height: auto;
-                width: 100%;
-            }
-            #main-content {
-                margin-top: 60px;
-            }
-        }
-    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/dashboard.css?v=<?php echo time(); ?>">
+
 </head>
 <body class="bg-light">
     
-    <?php require('component/header.php'); ?>
+    <?php 
+        require('component/header.php'); 
+
+        $is_shutdown = mysqli_fetch_assoc(mysqli_query($con, "SELECT `shutdown` FROM `settings`"));
+
+        $current_bookings = mysqli_fetch_assoc(mysqli_query($con,"SELECT 
+            COUNT(CASE WHEN booking_status='booked' AND arrival = 0 THEN 1 END) AS `new_bookings`,
+            COUNT(CASE WHEN booking_status='cancelled' AND refund = 0 THEN 1 END) AS `refund_bookings`
+            FROM `booking_order`"));
+
+        $unread_queries = mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(sr_no) AS `count` 
+            FROM `user_queries` WHERE `seen` = 0"));
+
+        $unread_reviews = mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(sr_no) AS `count` 
+            FROM `rating_review` WHERE `seen` = 0"));
+
+        $current_users = mysqli_fetch_assoc(mysqli_query($con,"SELECT 
+            COUNT(id) AS `total`,
+            COUNT(CASE WHEN `status`=1 THEN 1 END) AS `active`,
+            COUNT(CASE WHEN `status`=0 THEN 1 END) AS `inactive`,
+            COUNT(CASE WHEN `is_verified`=0 THEN 1 END) AS `unverified`
+            FROM `user_cred`"));
+
+        // Lấy năm hiện tại và năm người dùng chọn (Nếu không chọn thì mặc định lấy năm nay)
+        $date = new DateTime();
+        $curr_year = $date->format("Y"); // Ví dụ: 2025
+        // Nếu trên URL có ?year=2023 thì lấy 2023, ngược lại lấy năm nay
+        $selected_year = isset($_GET['year']) ? $_GET['year'] : $curr_year;
+
+        // Tạo mảng 12 tháng rỗng
+        $chart_data = array_fill(1, 12, 0); 
+
+        // Câu lệnh SQL (Đã sửa đoạn YEAR(...) = '$selected_year')
+        $year_query = mysqli_query($con, "SELECT 
+            MONTH(datentime) as month, 
+            SUM(trans_amount) as total_money 
+            FROM booking_order 
+            WHERE booking_status = 'booked' 
+            AND YEAR(datentime) = '$selected_year' 
+            GROUP BY MONTH(datentime)");
+
+        // Đổ dữ liệu
+        while($row = mysqli_fetch_assoc($year_query)){
+            $chart_data[$row['month']] = $row['total_money'];
+        }
+
+        $json_chart_data = json_encode(array_values($chart_data));
+    ?>
 
     <div class="container-fluid" id="main-content">
         <div class="row">
             <div class="col-lg-10 ms-auto p-4 overflow-hidden">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat quasi error deserunt adipisci officiis laudantium explicabo, est dolorum consectetur magni aliquam recusandae aspernatur minus perferendis ad, molestias illo debitis accusamus? Hic mollitia vitae voluptate fugit a ratione nulla commodi eligendi vel quibusdam, aliquid veniam? Quae voluptate commodi vero illo praesentium tempora voluptatibus necessitatibus? Quibusdam dolore odit, cum fuga impedit velit tenetur magni ab beatae saepe eligendi error molestiae expedita. Harum temporibus perferendis velit veniam veritatis architecto eaque aut, nemo, sapiente, in voluptas doloremque labore commodi quam nihil fugit repellat pariatur? Et minus, quibusdam tempora cumque, cupiditate nisi impedit nam harum voluptates assumenda tenetur voluptatibus consectetur autem corporis suscipit blanditiis ducimus maxime? Placeat nihil distinctio dolorem accusamus cupiditate! Quos libero porro nobis quae ipsa placeat fugit hic, ad dignissimos voluptatum corporis accusantium adipisci saepe vel velit molestiae, blanditiis ut consequuntur quaerat voluptates nulla minus! Voluptate quis labore quod maxime fuga amet aliquam sequi ut consequatur obcaecati optio blanditiis minima quam vitae debitis assumenda, saepe incidunt tenetur veniam fugiat eveniet corrupti natus at accusantium. Et mollitia nesciunt maiores debitis in tempora dignissimos aperiam repudiandae fugiat! Officiis harum blanditiis mollitia velit tenetur, tempora explicabo soluta totam accusantium rerum illo libero excepturi. Blanditiis ipsum quam, accusamus praesentium corporis dignissimos suscipit atque dolore rem incidunt nesciunt! Cum harum consectetur ad natus facere, cumque, earum veritatis officia debitis quis aspernatur, quam quidem laborum ullam libero a totam animi delectus labore porro corporis omnis commodi unde! Minus, laborum nostrum. Accusantium porro aliquam omnis officia in. Cupiditate fugiat suscipit velit alias consequatur, voluptatem dolorem. Quasi error, vero quo culpa, a provident temporibus sunt qui magni quam veritatis facilis accusamus tempora corrupti. In aut autem illo dicta deserunt eligendi consectetur, dolorum nulla, et, a repellendus impedit ad. Rerum autem consequuntur facere, reiciendis minus eius, saepe debitis natus quo omnis aut magnam quas ad itaque, iusto praesentium fugit! Nisi sint impedit aut reprehenderit reiciendis molestiae assumenda distinctio cum doloribus, iusto recusandae unde aliquid sunt aspernatur officia, accusamus consectetur fuga enim! Eligendi alias quasi modi ad blanditiis. Fugiat minima nulla aspernatur in vero saepe sequi ducimus id molestias. Temporibus, exercitationem? Possimus vitae excepturi voluptates saepe delectus cupiditate qui iste quaerat aut est similique laudantium quis, earum error doloremque, quo animi vero dicta, numquam alias inventore iusto consequatur nulla! Impedit nam iure numquam cumque quis molestias maiores libero quas atque facilis corrupti quod, ad aut? Eum ullam incidunt praesentium quisquam fuga, unde tempora, at animi eos expedita rem vel corrupti! Commodi alias inventore impedit ab eos debitis est vel nulla neque possimus architecto tempore cupiditate, molestiae laudantium illo veniam velit quam delectus deleniti facilis officia? Animi deleniti quo, laborum voluptas pariatur quae perferendis, vel quas eveniet accusamus doloremque hic saepe fugiat labore, provident nobis! Mollitia, quaerat maxime soluta consectetur ab nobis nemo, ipsum autem similique numquam doloribus alias aspernatur consequuntur quidem natus accusantium quam culpa repellendus error laborum. Voluptatum dolore nobis optio laboriosam possimus dignissimos voluptatibus consequuntur fugit quo maxime adipisci blanditiis harum, provident voluptates, quisquam voluptas eligendi, velit modi quibusdam nostrum vero sequi beatae. Nesciunt, quasi odio accusamus, nam repellendus quis eveniet sint ea consectetur, minima vitae officia? Repellat omnis quo, ipsum nihil totam ad soluta ex minima. Iste, odit sequi ut laudantium, consequuntur fugit cumque beatae reprehenderit nulla accusantium fuga dolor quia. Vero voluptate sapiente officiis eos nisi? Optio culpa tempora, magnam facere nisi facilis rem velit sint tenetur cupiditate maxime, voluptates tempore odit molestiae amet hic dignissimos voluptatem ratione corrupti nemo reprehenderit! Ab quis animi enim voluptas libero vero dolorum eligendi nostrum, veniam magnam deserunt itaque perspiciatis voluptate deleniti. Doloribus porro libero tenetur eius perferendis labore mollitia autem qui possimus! Et odio iste debitis impedit distinctio sunt iure aspernatur molestias, quibusdam earum sint labore facere minima corrupti blanditiis expedita, quas, numquam unde nostrum optio. Dolorem, velit corrupti. Voluptates illo odit, amet facilis ipsa explicabo cupiditate, rem eaque dicta dignissimos ab aliquam eius tenetur alias dolorum quia iste obcaecati adipisci tempore quas dolor asperiores. Reprehenderit ad odit blanditiis alias itaque expedita nam delectus est. Atque suscipit dolorem nobis assumenda natus, distinctio sed doloribus, repellat ducimus praesentium asperiores architecto. Numquam, recusandae. Facilis perspiciatis aliquam obcaecati provident fuga? Molestias est adipisci voluptate perspiciatis cumque quod ea obcaecati blanditiis delectus rerum nihil, similique aspernatur aliquam optio omnis natus nostrum commodi quasi. Officia animi quidem laboriosam. Magni enim explicabo neque voluptate laudantium, inventore iusto, alias reiciendis ipsam consequatur animi fugiat eveniet veniam repellendus debitis ea natus quas totam labore necessitatibus voluptatum! Obcaecati mollitia suscipit, voluptates voluptatum sunt eligendi id libero earum ea blanditiis beatae recusandae eaque incidunt expedita necessitatibus vero delectus placeat. Ratione recusandae corporis quos, assumenda perferendis molestiae rerum. Voluptatem, inventore animi. Officiis quae neque dicta recusandae quaerat praesentium. Minima itaque nihil nisi ab, quis dolor ex neque. Quod, eius explicabo. Earum laboriosam obcaecati ipsa. Veritatis non ex iusto molestias deleniti minus illo, quibusdam, sint officia natus laboriosam. Aspernatur optio at rerum enim nam ipsum commodi nemo dolorem earum tenetur, iusto velit perferendis veniam molestiae eius, explicabo exercitationem quo iure animi nisi nulla iste porro! Voluptatem saepe sit accusantium qui pariatur molestias fugit voluptatum libero debitis et facilis, repellat temporibus recusandae eveniet? Dolores, atque veniam hic officia ratione facere obcaecati illum ipsa labore! Quam vel numquam minima similique accusantium a sint dolorum tempora excepturi, explicabo est, inventore voluptatem adipisci ipsum ex mollitia voluptas nam! Expedita iure blanditiis odit quis illo earum aliquid, maxime enim a fuga similique culpa. Reprehenderit, qui aliquid soluta deserunt repellendus molestias libero velit. Tenetur doloremque est illo suscipit non maxime in tempora impedit cupiditate, a, quidem ea labore? Aliquam, illo laudantium vel ut recusandae veritatis! Vero eum aspernatur veritatis repudiandae. Repudiandae qui totam molestias tenetur maiores sed, illo deleniti magnam ut officiis? Natus consequuntur vitae amet, quibusdam quo quia pariatur rerum, sit qui cumque perspiciatis a tenetur sunt, excepturi commodi quisquam atque unde magnam. Placeat nesciunt, doloribus hic consectetur quibusdam veritatis tenetur in voluptates nisi impedit nam commodi recusandae odit tempore minima rerum ducimus repellat accusantium? Vel assumenda recusandae culpa error quisquam quam non accusamus sit placeat adipisci laudantium, similique, corrupti eveniet illum facere amet! Placeat voluptas tempora, libero id fugit sequi deserunt dolore cupiditate itaque accusantium nemo quo sapiente provident dolor facere tempore! Cupiditate cumque dolores eos laboriosam beatae ad, omnis fuga at neque sint, odit animi enim illo architecto molestiae consequatur voluptas, voluptatem impedit asperiores praesentium. In, aliquam porro! Rem, quidem at, commodi enim vitae consequuntur eum velit architecto libero incidunt, excepturi mollitia autem provident laudantium. Ullam tempora deserunt saepe quidem doloribus. Saepe, commodi! Neque error tempora a quidem quod, nobis eaque voluptates minus necessitatibus sunt alias nesciunt voluptatum incidunt ut optio est possimus repudiandae accusamus, quo inventore odit deserunt aliquid? Pariatur neque fugit voluptatum eveniet nobis aut nulla consectetur ipsam magnam dolorum incidunt illo magni, laborum delectus veniam. Amet odit vero nesciunt ipsam voluptatibus, explicabo vitae, perferendis hic corporis ad nobis accusantium libero dolores reprehenderit quibusdam eum laudantium voluptate exercitationem dolorum architecto sequi? Saepe nihil quos beatae iste architecto velit culpa minus debitis, natus tempore neque ullam deleniti iusto? Temporibus, amet voluptatibus fugiat quos enim hic incidunt blanditiis quidem, molestias omnis doloribus adipisci tenetur quasi, error aliquam? Illo deserunt facere placeat amet beatae dolorum architecto sit corporis ullam quibusdam natus aliquam dignissimos, numquam quaerat? Pariatur sed, perspiciatis quibusdam commodi fuga aliquid accusamus veniam debitis. Minima ipsum voluptatem nesciunt iste officia, similique, omnis possimus ea quibusdam ex illo, quos eligendi consectetur. Numquam libero ex quibusdam, nisi asperiores perferendis, architecto illo eveniet explicabo optio nostrum unde quae quod ipsam minus earum sunt? Debitis fugiat neque vitae fuga ex cupiditate nostrum voluptatibus, saepe voluptate atque id esse officia veritatis magnam placeat ducimus! Voluptate earum ipsum iusto commodi, quisquam tempora tenetur qui officiis. Suscipit odio hic eos, accusantium nostrum libero, nihil officia dolores expedita minus ea sed incidunt non nobis nulla inventore sunt iure obcaecati aspernatur fugiat, quae quas sit nemo dolor. Provident aut reiciendis mollitia veritatis molestiae eaque aperiam ipsam tenetur alias esse reprehenderit, voluptatem vitae dolorem delectus magnam ut rerum ullam optio neque atque sint hic odio! Magni facere veniam voluptatum blanditiis quos? Cumque, expedita. Commodi, officiis! Placeat tempora cum, voluptatem nam, voluptas iusto et quo temporibus officiis dolore suscipit dolorum ducimus rerum, eveniet possimus laudantium! Harum et, beatae quis saepe perspiciatis ipsum laborum reiciendis molestiae voluptatibus quia voluptates, numquam amet voluptas. Earum laborum culpa dolorum fugit, nisi fuga! At explicabo quibusdam error hic molestias? Architecto expedita sint, neque corporis maiores voluptatum alias doloremque. Necessitatibus adipisci consectetur sed sapiente facere dolorem? Nisi, earum doloribus velit magnam nam odio impedit, ab provident veritatis ratione cupiditate temporibus eveniet. Tempore aspernatur, non eaque veniam similique illo architecto officiis laboriosam atque ratione est. Perferendis dolor nihil sit aliquid temporibus alias reiciendis impedit eos debitis exercitationem facilis ex vel omnis error dicta quas, culpa rem veritatis dolorum vero. Qui quidem assumenda voluptas facilis vitae. Esse totam dicta repudiandae, tenetur itaque illo odit numquam veniam voluptates blanditiis tempore soluta magni beatae illum mollitia laboriosam aliquid iste ipsum perspiciatis ab eaque minus nam aliquam quis? Hic quia ea maiores culpa officiis reprehenderit non earum cum, deleniti a doloremque veritatis cupiditate consequuntur cumque iste neque sint aliquid sit impedit placeat quo dolorum nulla quae. Fugit, dignissimos dolore! Possimus earum doloribus consequatur amet aut sint assumenda. Ad, ut. Non incidunt laboriosam excepturi eius adipisci accusamus, beatae temporibus dolore dolorem animi expedita modi doloribus, ducimus illo, recusandae cupiditate ut molestiae rem in amet! Excepturi nam ex eveniet harum deleniti, saepe totam magni exercitationem tempora inventore, quasi aliquid iusto possimus soluta amet animi. Beatae aut repellat provident illo consequuntur veniam, consectetur esse distinctio! Iste aspernatur odit accusantium placeat corporis voluptas sint alias ut reprehenderit illo rem velit, est, amet officiis, fuga molestias odio non expedita eveniet repellat ducimus. Laudantium soluta tempore atque repellendus dicta esse, facere est, harum at modi, quibusdam repellat ut praesentium in iste itaque ratione! Non voluptatibus temporibus sunt officia accusamus repellendus hic minima cumque recusandae, sapiente esse commodi numquam optio blanditiis doloremque ipsa aut animi dolorem provident. Consequatur ullam commodi culpa, blanditiis repudiandae non similique et possimus expedita doloremque, nihil qui in reiciendis eos iure odio, veniam distinctio? Soluta ipsa minus molestias cupiditate ad eos sapiente inventore assumenda nulla est ut aliquam incidunt unde aperiam itaque, ducimus, facere laborum nisi aspernatur architecto accusamus nobis. Provident deserunt facilis sint eaque, itaque consequatur consequuntur. Dolores harum assumenda sit provident eligendi voluptatibus voluptates. Nam, facilis similique ipsam maxime voluptatibus incidunt corporis sapiente harum a at accusantium beatae, excepturi ut cumque laborum fuga, quos tempora. Amet neque blanditiis quibusdam vero quis eius nostrum! Nostrum, natus fuga, deleniti doloremque dicta vero sequi, architecto dolor fugiat commodi consectetur nihil? Error perferendis quae repudiandae voluptate eaque illum quaerat cumque nam ratione. Odit, doloremque animi quas molestias, nam amet, voluptates officiis rem at esse quisquam! Beatae repellat nobis commodi harum esse ab, accusantium ex ducimus excepturi aut laudantium a totam dolores laboriosam saepe velit assumenda, neque nostrum voluptates iure incidunt ea. Nemo expedita deleniti aperiam. Iusto eveniet deleniti quia voluptatem quo dolores beatae ad nostrum voluptatibus molestias sed accusamus, pariatur error. Consequatur libero eius, enim sequi laboriosam, exercitationem est dicta officia, laborum cum eum totam? Odit cumque porro exercitationem minus error, provident culpa veritatis nihil labore at cum ipsam debitis beatae molestiae veniam nisi accusamus. At, corrupti! Unde mollitia molestias assumenda magni! Quae accusantium doloremque inventore voluptatibus dolorum, quidem a rerum earum fugiat ullam doloribus exercitationem aperiam facilis quos omnis incidunt beatae laboriosam neque quibusdam illum quasi, nemo vel. Magnam animi quasi quis cumque. Esse porro repudiandae, natus at labore impedit non alias vitae saepe illum quod? Ab ipsum ducimus, assumenda autem accusantium quis dolorem cum odio iure nihil ipsa, corrupti quasi, fugiat laudantium consequatur nemo error totam corporis neque vero debitis deleniti eos ut. Sint saepe iste distinctio provident repellendus! Fugiat quos quae facere, veritatis quas animi, voluptas totam non doloribus temporibus repudiandae iure porro saepe earum distinctio, consequuntur ipsam vel. Sed nesciunt minima cupiditate doloribus consequuntur. Facilis, pariatur at, beatae quibusdam minus quae minima exercitationem id veniam non commodi laborum repudiandae molestias aperiam rem reiciendis dicta. Recusandae nostrum animi deserunt minus.
+
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h3 class="fw-bold">Tổng Quan Hệ Thống</h3>
+                    <?php 
+                        if($is_shutdown['shutdown']){
+                            echo '<h6 class="badge bg-danger py-2 px-3 rounded shadow-sm"><i class="bi bi-exclamation-triangle-fill me-2"></i>Đang bật chế độ bảo trì!</h6>';
+                        }
+                    ?>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-4">
+                        <a href="new_bookings.php" class="text-decoration-none">
+                            <div class="card dashboard-card border-left-success p-3">
+                                <div class="card-body p-0">
+                                    <h6 class="card-label text-success">Đặt phòng mới</h6>
+                                    <div class="card-data"><?php echo $current_bookings['new_bookings'] ?></div>
+                                    <i class="bi bi-journal-check card-icon text-success"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <a href="refund_bookings.php" class="text-decoration-none">
+                            <div class="card dashboard-card border-left-warning p-3">
+                                <div class="card-body p-0">
+                                    <h6 class="card-label text-warning">Đơn hoàn tiền</h6>
+                                    <div class="card-data"><?php echo $current_bookings['refund_bookings'] ?></div>
+                                    <i class="bi bi-cash-stack card-icon text-warning"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <a href="user_queries.php" class="text-decoration-none">
+                            <div class="card dashboard-card border-left-info p-3">
+                                <div class="card-body p-0">
+                                    <h6 class="card-label text-info">Yêu cầu hỗ trợ</h6>
+                                    <div class="card-data"><?php echo $unread_queries['count'] ?></div>
+                                    <i class="bi bi-envelope-exclamation card-icon text-info"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <a href="rate_review.php" class="text-decoration-none">
+                            <div class="card dashboard-card border-left-primary p-3">
+                                <div class="card-body p-0">
+                                    <h6 class="card-label text-primary">Đánh giá & Review</h6>
+                                    <div class="card-data"><?php echo $unread_reviews['count'] ?></div>
+                                    <i class="bi bi-star-half card-icon text-primary"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="fw-bold">Thống Kê Đặt Phòng & Doanh Thu</h5>
+                    <select class="form-select shadow-none bg-white w-auto rounded-3 border-0 shadow-sm" onchange="booking_analytics(this.value)">
+                        <option value="1">30 ngày qua</option>
+                        <option value="2">90 ngày qua</option>
+                        <option value="3">1 năm qua</option>
+                        <option value="4">Toàn thời gian</option>
+                    </select>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3 mb-4">
+                        <div class="card dashboard-card p-3">
+                            <h6 class="card-label text-primary">Tổng số đơn</h6>
+                            <h1 class="mt-2 mb-0 fw-bold" id="total_bookings">0</h1>
+                            <small class="text-muted mt-2 d-block" id="total_amt">0 đ</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card dashboard-card p-3">
+                            <h6 class="card-label text-success">Đơn thành công</h6>
+                            <h1 class="mt-2 mb-0 fw-bold" id="active_bookings">0</h1>
+                            <small class="text-muted mt-2 d-block" id="active_amt">0 đ</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card dashboard-card p-3">
+                            <h6 class="card-label text-danger">Đơn đã hủy</h6>
+                            <h1 class="mt-2 mb-0 fw-bold" id="cancelled_bookings">0</h1>
+                            <small class="text-muted mt-2 d-block" id="cancelled_amt">0 đ</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card dashboard-card p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="card-label text-dark" style="font-size: 1.1rem;">Biểu đồ doanh thu</h6>
+                                <select class="form-select shadow-none bg-light w-auto border" 
+                                    onchange="window.location.href='index.php?year='+this.value">
+                                <?php 
+                                    // Vòng lặp từ (Năm nay - 3) đến (Năm nay + 3)
+                                    for($i = $curr_year - 3; $i <= $curr_year + 3; $i++){
+                                        // Nếu $i trùng với năm đang chọn thì thêm thuộc tính 'selected'
+                                        $selected = ($i == $selected_year) ? 'selected' : '';
+                                        echo "<option value='$i' $selected>Năm $i</option>";
+                                    }
+                                ?>
+                            </select>
+                            </div>
+                            <div style="height: 350px;">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between mb-3 mt-4">
+                    <h5 class="fw-bold">Dữ Liệu Người Dùng & Phản Hồi</h5>
+                    <select class="form-select shadow-none bg-white w-auto rounded-3 border-0 shadow-sm" onchange="user_analytics(this.value)">
+                        <option value="1">30 ngày qua</option>
+                        <option value="2">90 ngày qua</option>
+                        <option value="3">1 năm qua</option>
+                        <option value="4">Toàn thời gian</option>
+                    </select>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3 mb-4">
+                        <div class="card dashboard-card p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-label text-success">Đăng ký mới</h6>
+                                    <h2 class="mt-2 mb-0 fw-bold" id="total_new_reg">0</h2>
+                                </div>
+                                <i class="bi bi-person-plus-fill fs-1 text-success opacity-25"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card dashboard-card p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-label text-primary">Câu hỏi/Hỗ trợ</h6>
+                                    <h2 class="mt-2 mb-0 fw-bold" id="total_queries">0</h2>
+                                </div>
+                                <i class="bi bi-chat-left-text-fill fs-1 text-primary opacity-25"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card dashboard-card p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-label text-primary">Đánh giá</h6>
+                                    <h2 class="mt-2 mb-0 fw-bold" id="total_reviews">0</h2>
+                                </div>
+                                <i class="bi bi-star-fill fs-1 text-primary opacity-25"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mt-4 mb-3">Tổng Quan Thành Viên</h5>
+                <div class="row mb-3">
+                    <div class="col-md-3 mb-4">
+                        <div class="card dashboard-card bg-primary text-white p-3 h-100">
+                            <div class="card-body p-0">
+                                <h6 class="text-white-50 text-uppercase" style="font-size: 0.8rem;">Tổng thành viên</h6>
+                                <h1 class="mt-2 mb-0 fw-bold"><?php echo $current_users['total'] ?></h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card dashboard-card p-3 h-100">
+                            <h6 class="card-label text-success">Đang hoạt động</h6>
+                            <h2 class="mt-2 mb-0 text-dark"><?php echo $current_users['active'] ?></h2>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card dashboard-card p-3 h-100">
+                            <h6 class="card-label text-warning">Bị khóa / Ngưng</h6>
+                            <h2 class="mt-2 mb-0 text-dark"><?php echo $current_users['inactive'] ?></h2>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card dashboard-card p-3 h-100">
+                            <h6 class="card-label text-danger">Chưa xác thực</h6>
+                            <h2 class="mt-2 mb-0 text-dark"><?php echo $current_users['unverified'] ?></h2>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
-
     <?php require('component/scripts.php'); ?>
+    <script src="scripts/dashboard.js"></script>
+    
+    <script>
+        const ctx = document.getElementById('revenueChart');
+
+        // Lấy dữ liệu từ PHP gán vào biến Javascript
+        // Dữ liệu này chính là cái chuỗi JSON mình tạo ở trên
+        const revenueData = <?php echo $json_chart_data; ?>;
+
+        new Chart(ctx, {
+            type: 'line', 
+            data: {
+                // Nhãn hiển thị trục ngang (12 tháng)
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    
+                    data: revenueData, 
+                    
+                    borderWidth: 3,
+                    borderColor: '#4e73df',
+                    backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#4e73df',
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            // Format số tiền hiển thị cho đẹp (ví dụ: 1.000.000 đ)
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            // Format trục Y thành tiền tệ
+                            callback: function(value, index, values) {
+                                return new Intl.NumberFormat('vi-VN', { maximumSignificantDigits: 3 }).format(value);
+                            }
+                        },
+                        grid: { borderDash: [2, 4], color: '#e2e8f0' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

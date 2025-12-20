@@ -8,34 +8,45 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Đăng nhập Quản trị viên</title>
     <?php require('component/links.php'); ?> 
-    <style>
-        div.login-form {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-        }
-    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body class="bg-light">
-    <div class="login-form text-center bg-white shadow rounded overflow-hidden">
+    
+    <div class="login-form">
         <form method="POST">
-            <h4 class="bg-dark text-white py-3">ĐĂNG NHẬP</h4>
+            <div class="login-header">
+                <h4>QUẢN TRỊ WEBSITE</h4>
+            </div>
+            
             <div class="p-4">
                 <div class="mb-3">
-                    <input name="admin_name" required type="text" class="form-control shadow-none text-center" placeholder="Admin Name">
+                    <label class="form-label fw-bold small text-secondary">Tên đăng nhập</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                        <input name="admin_name" required type="text" class="form-control shadow-none" placeholder="Nhập tên admin...">
+                    </div>
                 </div>
+                
                 <div class="mb-4">
-                    <input name="admin_pass" required type="password" class="form-control shadow-none text-center" placeholder="Password">
+                    <label class="form-label fw-bold small text-secondary">Mật khẩu</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-shield-lock-fill"></i></span>
+                        <input name="admin_pass" required type="password" class="form-control shadow-none" placeholder="Nhập mật khẩu...">
+                    </div>
                 </div>
-                <button name="login" type="submit" class="btn text-white custom-bg shadow-none">Đăng nhập</button>
+                
+                <button name="login" type="submit" class="btn btn-login w-100 shadow-none">
+                    ĐĂNG NHẬP <i class="bi bi-box-arrow-in-right ms-2"></i>
+                </button>
             </div>
         </form>
     </div>

@@ -30,7 +30,7 @@
     <div class="container">
         <div class="row align-items-center justify-content-between">
             <div class="col-lg-6 col-md-6 mb-4">
-                <img src="images/about/about.jpg" class="w-100 rounded shadow">
+                <img src="images/about/about_us.jpg" class="w-100 rounded shadow">
             </div>
             <div class="col-lg-6 col-md-6 mb-4">
                 <h3 class="mb-3">Chào mừng đến với T1 Hotel</h3>

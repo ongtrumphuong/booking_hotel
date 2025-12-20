@@ -10,26 +10,71 @@
         </div>
 
         <div class="col-lg-12 col-md-12 px-4">
-            <div class="card p-3 shadow-sm rounded text-center">
+           <div class="card p-4 shadow-sm rounded text-center">
                 <?php
                     $filtered_data = filteration($_GET); 
-                    $status = $filtered_data['status'];
-                    $message = $filtered_data['msg'];
-                    $ref = $filtered_data['ref'];
                     
-                    if($status == 'booked') {
+                    // Lấy các tham số, kiểm tra tồn tại để tránh lỗi
+                    $status = isset($filtered_data['status']) ? $filtered_data['status'] : '';
+                    $message = isset($filtered_data['msg']) ? $filtered_data['msg'] : '';
+                    $ref = isset($filtered_data['ref']) ? $filtered_data['ref'] : '';
+
+                    if($status == 'booked') 
+                    {
+                        // --- TRƯỜNG HỢP THÀNH CÔNG (Màu Xanh) ---
                         echo "
-                            <h4 class='text-success'>Thành công! <i class='bi bi-check-circle-fill'></i></h4>
-                            <p>$message</p>
-                            <p>Mã tham chiếu: <b>$ref</b></p>
-                            <a href='index.php' class='btn btn-success shadow-none'>Quay lại Trang chủ</a>
+                            <div class='mb-3'>
+                                <i class='bi bi-check-circle-fill text-success' style='font-size: 4rem;'></i>
+                            </div>
+                            <h4 class='text-success fw-bold'>Thanh toán thành công!</h4>
+                            <p class='mb-4'>$message</p>
+                            
+                            <div class='alert alert-light border shadow-sm d-inline-block px-4 py-2'>
+                                Mã giao dịch: <b>$ref</b>
+                            </div>
+                            
+                            <div class='mt-4'>
+                                <a href='index.php' class='btn btn-success shadow-none btn-lg'>Về trang chủ</a>
+                                <a href='bookings.php' class='btn btn-outline-success shadow-none btn-lg ms-2'>Xem đặt phòng</a>
+                            </div>
                         ";
-                    } else {
+                    } 
+                    else if ($status == 'cancelled') 
+                    {
+                        // --- TRƯỜNG HỢP HỦY (Màu Vàng Cam) ---
                         echo "
-                            <h4 class='text-danger'>Thất bại! <i class='bi bi-x-circle-fill'></i></h4>
-                            <p>$message</p>
-                            <p>Mã tham chiếu: <b>$ref</b></p>
-                            <a href='rooms.php' class='btn btn-danger shadow-none'>Thử lại Đặt phòng</a>
+                            <div class='mb-3'>
+                                <i class='bi bi-exclamation-triangle-fill text-warning' style='font-size: 4rem;'></i>
+                            </div>
+                            <h4 class='text-warning fw-bold'>Giao dịch đã bị hủy!</h4>
+                            <p class='mb-4'>Bạn đã chủ động hủy quá trình thanh toán.</p>
+                            
+                            <div class='alert alert-light border shadow-sm d-inline-block px-4 py-2'>
+                                Mã tham chiếu: <b>$ref</b>
+                            </div>
+                            
+                            <div class='mt-4'>
+                                <a href='rooms.php' class='btn btn-warning text-white shadow-none btn-lg'>Đặt lại phòng</a>
+                            </div>
+                        ";
+                    } 
+                    else 
+                    {
+                        // --- TRƯỜNG HỢP LỖI / THẤT BẠI (Màu Đỏ) ---
+                        echo "
+                            <div class='mb-3'>
+                                <i class='bi bi-x-circle-fill text-danger' style='font-size: 4rem;'></i>
+                            </div>
+                            <h4 class='text-danger fw-bold'>Thanh toán thất bại!</h4>
+                            <p class='mb-4'>$message</p>
+                            
+                            <div class='alert alert-light border shadow-sm d-inline-block px-4 py-2'>
+                                Mã tham chiếu: <b>$ref</b>
+                            </div>
+                            
+                            <div class='mt-4'>
+                                <a href='rooms.php' class='btn btn-danger shadow-none btn-lg'>Thử lại ngay</a>
+                            </div>
                         ";
                     }
                 ?>

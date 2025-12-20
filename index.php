@@ -56,35 +56,42 @@
         <div class="row">
             <div class="col-lg-12 bg-white shadow p-4 rounded mb-4">
                 <h5 class="mb-4">Tìm chỗ nghỉ ngơi</h5>
-                <form>
+                <form action="rooms.php">
                     <div class="row align-items-end">
                         <div class="col-lg-3 mb-3">
                             <label class="form-label" style="font-weight: 500;">Ngày nhận phòng</label>
-                            <input type="date" class="form-control shadow-none">
+                            <input type="date" class="form-control shadow-none" name="checkin" required>
                         </div>
                         <div class="col-lg-3 mb-3">
                             <label class="form-label" style="font-weight: 500;">Ngày trả phòng</label>
-                            <input type="date" class="form-control shadow-none">
+                            <input type="date" class="form-control shadow-none" name="checkout" required>
                         </div>
                         <div class="col-lg-3 mb-3">
                             <label class="form-label" style="font-weight: 500;">Người lớn</label>
-                            <select class="form-select shadow-none">
-                                <option value="1">1 Người lớn</option>
-                                <option value="2">2 Người lớn</option>
-                                <option value="3">3 Người lớn</option>
-                                <option value="4">4 Người lớn</option>
+                            <select class="form-select shadow-none" name="adult">
+                                <?php
+                                    $guests_q = mysqli_query($con,"SELECT MAX(adult) AS `max_adult`, MAX(children) AS `max_children` 
+                                        FROM `rooms` WHERE `status`='1' AND `removed`='0'");
+                                    
+                                    $guests_res = mysqli_fetch_assoc($guests_q);
+
+                                    for($i=1; $i<=$guests_res['max_adult']; $i++){
+                                        echo"<option value='$i'>$i Người lớn</option>";
+                                    }
+                                ?>
                             </select>
                         </div>
                         <div class="col-lg-2 mb-3">
                             <label class="form-label" style="font-weight: 500;">Trẻ em</label>
-                            <select class="form-select shadow-none">
-                                <option value="0">0 Trẻ em</option>
-                                <option value="1">1 Trẻ em</option>
-                                <option value="2">2 Trẻ em</option>
-                                <option value="3">3 Trẻ em</option>
-                                <option value="4">4 Trẻ em</option>
+                            <select class="form-select shadow-none" name="children">
+                                <?php
+                                    for($i=0; $i<=$guests_res['max_children']; $i++){
+                                        echo"<option value='$i'>$i Trẻ em</option>";
+                                    }
+                                ?>
                             </select>
                         </div>
+                        <input type="hidden" name="check_availability">
                         <div class="col-lg-1 mb-lg-3 mt-2">
                             <button type="submit" class="btn text-white shadow-none custom-bg">Tìm phòng</button>
                         </div>
@@ -149,6 +156,29 @@
                         $book_btn = "<button onclick='checkLoginToBook($login,$room_data[id])' class='btn btn-sm text-white custom-bg shadow-none'>Đặt phòng ngay</button>";
                     }
 
+                    $rating_q = "SELECT AVG(rating) AS `avg_rating` FROM `rating_review` 
+                        WHERE `room_id` = '$room_data[id]' ORDER BY `sr_no` DESC LIMIT 20";
+
+                    $rating_res = mysqli_query($con,$rating_q);
+                    $rating_fetch = mysqli_fetch_assoc($rating_res);
+
+                    $rating_data = "";
+
+                    if($rating_fetch['avg_rating'] != NULL){
+                        $rating_data =  "<div class='rating mb-4'>
+                            <h6 class='mb-1'>Đánh giá</h6>
+                            <span class='badge rounded-pill bg-light'>
+                        ";
+
+                        for($i = 0; $i < $rating_fetch['avg_rating']; $i++){
+                            $rating_data .= "<i class='bi bi-star-fill text-warning'></i> ";
+                        }
+
+                        $rating_data .= "</span>
+                            </div>
+                        ";
+                    }
+                    
                     echo<<<data
                         <div class="col-lg-4 col-md-6 my-3">
                             <div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
@@ -173,16 +203,7 @@
                                             $room_data[children] trẻ em
                                         </span>
                                     </div>
-                                    <div class="rating mb-4">
-                                        <h6 class="mb-1">Đánh giá</h6>
-                                        <span class="badge rounded-pill bg-light">
-                                            <i class="bi bi-star-fill text-warning"></i>
-                                            <i class="bi bi-star-fill text-warning"></i>
-                                            <i class="bi bi-star-fill text-warning"></i>
-                                            <i class="bi bi-star-fill text-warning"></i>
-                                            <i class="bi bi-star-fill text-warning"></i>
-                                        </span>
-                                    </div>
+                                    $rating_data
                                     <div class="d-flex justify-content-evenly mb-2">
                                         $book_btn
                                         <a href="room_details.php?id=$room_data[id]" class="btn btn-sm btn-outline-dark shadow-none">Xem chi tiết</a>
@@ -236,53 +257,41 @@
     <div class="container mt-5">
         <div class="swiper swiper-testimonials">
             <div class="swiper-wrapper mb-5">
+                <?php
+                    $review_q = "SELECT rr.*,uc.name AS uname, uc.profile, r.name AS rname FROM `rating_review` rr
+                        INNER JOIN `user_cred` uc ON rr.user_id = uc.id
+                        INNER JOIN `rooms` r ON rr.room_id = r.id
+                        ORDER BY `sr_no` DESC LIMIT 6";
+
+                    $review_res = mysqli_query($con,$review_q);
+                    $img_path = USERS_IMG_PATH;
+
+                    if(mysqli_num_rows($review_res) == 0){
+                        echo 'No reviews yet!';
+                    }
+                    else {
+                        while($row = mysqli_fetch_assoc($review_res)){
+                            $stars = "<i class='bi bi-star-fill text-warning'></i> ";
+                            for($i=1;$i<$row['rating'];$i++){
+                                $stars .= " <i class='bi bi-star-fill text-warning'></i>";
+                            }
+
+                            echo<<<slides
+                                <div class="swiper-slide bg-white p-4">
+                                    <div class="profile d-flex align-items-center mb-3">
+                                        <img src="$img_path$row[profile]" class="rounded-circle" loading="lazy" width="30px">
+                                        <h6 class="m-0 ms-2">$row[uname]</h6>
+                                    </div>
+                                    <p>$row[review]</p>
+                                    <div class="rating">
+                                        $stars
+                                    </div>
+                                </div>
+                            slides;
+                        }
+                    }
                 
-                <div class="swiper-slide bg-white p-4">
-                    <div class="profile d-flex align-items-center mb-3">
-                        <img src="images/testimonials/1.jpg" width="30px">
-                        <h6 class="m-0 ms-2">Nguyễn Văn A</h6>
-                    </div>
-                    <p>Khách sạn rất tuyệt vời, dịch vụ chuyên nghiệp và nhân viên thân thiện. Tôi sẽ quay lại đây trong lần tới!</p>
-                    <div class="rating">
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                    </div>
-                </div>
-
-                <div class="swiper-slide bg-white p-4">
-                    <div class="profile d-flex align-items-center mb-3">
-                        <img src="images/testimonials/1.jpg">
-                        <h6 class="m-0 ms-2">Nguyễn Văn A</h6>
-                    </div>
-                    <p>Khách sạn rất tuyệt vời, dịch vụ chuyên nghiệp và nhân viên thân thiện. Tôi sẽ quay lại đây trong lần tới!</p>
-                    <div class="rating">
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                    </div>
-                </div>
-
-                <div class="swiper-slide bg-white p-4">
-                    <div class="profile d-flex align-items-center mb-3">
-                        <img src="images/testimonials/1.jpg">
-                        <h6 class="m-0 ms-2">Nguyễn Văn A</h6>
-                    </div>
-                    <p>Khách sạn rất tuyệt vời, dịch vụ chuyên nghiệp và nhân viên thân thiện. Tôi sẽ quay lại đây trong lần tới!</p>
-                    <div class="rating">
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                    </div>
-                </div>
-
-
+                ?>
             </div>
             <div class="swiper-pagination"></div>
         </div>

@@ -3,6 +3,7 @@
     require('component/db_config.php');
     adminLogin();
 
+    // --- GIỮ NGUYÊN LOGIC PHP GỐC ---
     if(isset($_GET['seen'])){
         $frm_data = filteration($_GET);
 
@@ -57,24 +58,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Quản Trị - Lời nhắn từ khách hàng</title>
+    <title>Trang Quản Trị - Lời nhắn khách hàng</title>
     <?php require('component/links.php'); ?>
-    <style>
-        #dashboard-menu {
-            position: fixed;
-            height: 100%;
-            z-index: 11;
-        }
-        @media screen and (max-width: 991px) {
-            #dashboard-menu {
-                height: auto;
-                width: 100%;
-            }
-            #main-content {
-                margin-top: 60px;
-            }
-        }
-    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/user_queries.css">
 </head>
 <body class="bg-light">
     
@@ -83,30 +72,29 @@
     <div class="container-fluid" id="main-content">
         <div class="row">
             <div class="col-lg-10 ms-auto p-4 overflow-hidden">
-                <h3 class="mb-4">Slider</h3>
+                <h3 class="mb-4 section-title">Lời nhắn từ khách hàng</h3>
 
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body">
+                <div class="card dashboard-card mb-4">
+                    <div class="card-body p-4">
 
                         <div class="text-end mb-4">
-                            <a href="?seen=all" class="btn btn-dark rounded-pill shadow-none btn-sm">
-                                <i class="bi bi-check-all"></i> Đánh dấu tất cả là đã xem
+                            <a href="?seen=all" class="btn btn-custom-dark rounded-pill shadow-none btn-sm me-2">
+                                <i class="bi bi-check-all me-1"></i> Đánh dấu tất cả đã xem
                             </a>
-                            <a href="?del=all" class="btn btn-danger rounded-pill shadow-none btn-sm">
-                                <i class="bi bi-trash"></i> Xóa tất cả
+                            <a href="?del=all" class="btn btn-custom-danger rounded-pill shadow-none btn-sm">
+                                <i class="bi bi-trash me-1"></i> Xóa tất cả
                             </a>
                         </div>
 
-
-                        <div class="table-responsive-md" style="height: 450px; overflow-y: scroll;">
-                            <table class="table table-hover border text-center align-middle mb-0">
-                                <thead class="sticky-top">
-                                    <tr class="bg-dark text-white">
+                        <div class="table-responsive-md" style="height: 450px; overflow-y: auto;">
+                            <table class="table custom-table table-hover border text-center align-middle mb-0">
+                                <thead class="sticky-top" style="z-index: 1;">
+                                    <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Tên</th>
+                                        <th scope="col">Họ tên</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Tiêu đề</th>
-                                        <th scope="col">Lời nhắn</th>
+                                        <th scope="col" width="30%">Lời nhắn</th>
                                         <th scope="col">Ngày gửi</th>
                                         <th scope="col">Hành động</th>
                                     </tr>
@@ -116,22 +104,29 @@
                                         $q = "SELECT * FROM `user_queries` ORDER BY `sr_no` DESC";
                                         $data = mysqli_query($con, $q);
                                         $i = 1;
+                                        
                                         while($row = mysqli_fetch_assoc($data)){
+                                            $date = date("d-m-Y", strtotime($row['datentime']));
+                                            
                                             $seen = '';
+                                            // Logic hiển thị nút: Nếu chưa xem thì hiện nút "Đã xem" và xuống dòng
                                             if($row['seen'] != 1){
-                                                $seen = "<a href='?seen=$row[sr_no]' class='btn btn-sm rounded-pill btn-primary'>Đánh dấu là đã xem</a>";
+                                                $seen .= "<a href='?seen=$row[sr_no]' class='btn btn-sm rounded-pill btn-custom-dark shadow-none' style='font-size: 0.8rem;'><i class='bi bi-check2'></i> Đã xem</a>";
+                                                $seen .= "<br class='mb-2 d-block'>"; // Xuống dòng
                                             }
-                                            $seen .= " <a href='?del=$row[sr_no]' class='btn btn-sm rounded-pill btn-danger mt-2'>Xóa</a>";
+                                            
+                                            // Nút xóa luôn hiện
+                                            $seen .= "<a href='?del=$row[sr_no]' class='btn btn-sm rounded-pill btn-outline-danger shadow-none' style='font-size: 0.8rem;'><i class='bi bi-trash'></i> Xóa</a>";
+
                                             echo<<<query
                                                 <tr>
                                                     <td>$i</td>
-                                                    <td>$row[name]</td>
+                                                    <td><span class='fw-bold text-dark'>$row[name]</span></td>
                                                     <td>$row[email]</td>
                                                     <td>$row[subject]</td>
-                                                    <td>$row[message]</td>
-                                                    <td>$row[date]</td>
+                                                    <td class='text-start'>$row[message]</td>
+                                                    <td>$date</td>
                                                     <td>$seen</td>
-                                                    
                                                 </tr>
                                             query;
                                             $i++;
@@ -145,7 +140,6 @@
             </div>
         </div>
     </div>
-
 
     <?php require('component/scripts.php'); ?>
 </body>

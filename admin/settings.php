@@ -9,22 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Quản Trị - Cài đặt</title>
     <?php require('component/links.php'); ?>
-    <style>
-        #dashboard-menu {
-            position: fixed;
-            height: 100%;
-            z-index: 11;
-        }
-        @media screen and (max-width: 991px) {
-            #dashboard-menu {
-                height: auto;
-                width: 100%;
-            }
-            #main-content {
-                margin-top: 60px;
-            }
-        }
-    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/settings.css">
 </head>
 <body class="bg-light">
     
@@ -33,25 +21,24 @@
     <div class="container-fluid" id="main-content">
         <div class="row">
             <div class="col-lg-10 ms-auto p-4 overflow-hidden">
-                <h3 class="mb-4">Cài đặt</h3>
+                <h3 class="mb-4 section-title">Cài đặt hệ thống</h3>
                 
-                <!--General settings section-->
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body">
+                <div class="card dashboard-card mb-4">
+                    <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-3 justify-content-between">
-                            <h5 class="card-title m-0">Cài đặt chung</h5>
-                            <button class="btn btn-dark btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#general-s">
-                                <i class="bi bi-pencil-square"></i> Chỉnh sửa
+                            <h5 class="card-header-title m-0">Cài đặt chung</h5>
+                            <button class="btn btn-custom-dark btn-sm shadow-none" data-bs-toggle="modal" data-bs-target="#general-s">
+                                <i class="bi bi-pencil-square me-1"></i> Chỉnh sửa
                             </button>
                         </div>
-                        <h6 class="card-subtitle mb-1 fw-bold">Tên trang web</h6>
-                        <p class="card-text" id="site_title"></p>
-                        <h6 class="card-subtitle mb-1 fw-bold">Về chúng tôi</h6>
-                        <p class="card-text" id="site_about"></p>
+                        <h6 class="data-label mb-1">Tên trang web</h6>
+                        <p class="data-text" id="site_title"></p>
+                        
+                        <h6 class="data-label mb-1">Về chúng tôi</h6>
+                        <p class="data-text" id="site_about"></p>
                     </div>
                 </div>
 
-                <!--General settings modal-->
                 <div class="modal fade" id="general-s" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <form id="general_s_form">
@@ -71,104 +58,84 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" onclick="site_title.value = general_data.site_title, site_about.value = general_data.site_about" class="btn text-secondary shadow-none" data-bs-dismiss="modal">Thoát</button>
-                                    <button type="submit" class="btn custom-bg text-white shadow-none">OK</button>
+                                    <button type="submit" class="btn btn-custom-dark shadow-none">Lưu thay đổi</button>
                                 </div>
                             </div>
                         </form>
-                        
                     </div>
                 </div>
 
-                <!--Shutdown section-->
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body">
+                <div class="card dashboard-card mb-4">
+                    <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-3 justify-content-between">
-                            <h5 class="card-title m-0">Tắt trang web</h5>
+                            <h5 class="card-header-title m-0 text-danger">Chế độ bảo trì (Shutdown)</h5>
                             <div class="form-check form-switch ms-auto">
                                 <form>
-                                    <input onchange="upd_shutdown(this.value)" class="form-check-input" type="checkbox" id="shutdown_toggle">
+                                    <input onchange="upd_shutdown(this.value)" class="form-check-input" type="checkbox" id="shutdown_toggle" style="cursor: pointer; width: 3rem; height: 1.5rem;">
                                 </form>
                             </div>
-
-                            
                         </div>
-                        <p class="card-text" id="site_about">
-                            Tính năng này sẽ tắt trang web cho người dùng bình thường. Chỉ quản trị viên mới có thể truy cập trang web khi tính năng này được bật.
+                        <p class="text-muted mb-0">
+                            Khi bật tính năng này, trang web sẽ bị khóa đối với người dùng thường. Chỉ quản trị viên mới có thể truy cập.
                         </p>
                     </div>
                 </div>
 
-                <!--Contacts details section-->
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body">
+                <div class="card dashboard-card mb-4">
+                    <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-3 justify-content-between">
-                            <h5 class="card-title m-0">Cài đặt liên hệ</h5>
-                            <button class="btn btn-dark btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#contacts-s">
-                                <i class="bi bi-pencil-square"></i> Chỉnh sửa
+                            <h5 class="card-header-title m-0">Thông tin liên hệ</h5>
+                            <button class="btn btn-custom-dark btn-sm shadow-none" data-bs-toggle="modal" data-bs-target="#contacts-s">
+                                <i class="bi bi-pencil-square me-1"></i> Chỉnh sửa
                             </button>
                         </div>
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <h6 class="card-subtitle mb-1 fw-bold">Địa chỉ</h6>
-                                    <p class="card-text" id="address"></p>
+                                    <h6 class="data-label mb-1">Địa chỉ</h6>
+                                    <p class="data-text" id="address"></p>
                                 </div>
                                 <div class="mb-4">
-                                    <h6 class="card-subtitle mb-1 fw-bold">Google Map</h6>
-                                    <p class="card-text" id="gmap"></p>
+                                    <h6 class="data-label mb-1">Google Map Link</h6>
+                                    <p class="data-text text-truncate" id="gmap"></p>
                                 </div>
                                 <div class="mb-4">
-                                    <h6 class="card-subtitle mb-1 fw-bold">Số điện thoại</h6>
-                                    <p class="card-text mb-1">
-                                        <i class="bi bi-telephone-fill"></i> 
-                                        <span id="pn1"></span><br>
+                                    <h6 class="data-label mb-1">Số điện thoại</h6>
+                                    <p class="data-text mb-1">
+                                        <i class="bi bi-telephone-fill me-1"></i> <span id="pn1"></span>
                                     </p>
-                                    <p class="card-text">
-                                        <i class="bi bi-telephone-fill"></i> 
-                                        <span id="pn2"></span><br>
+                                    <p class="data-text">
+                                        <i class="bi bi-telephone-fill me-1"></i> <span id="pn2"></span>
                                     </p>
                                 </div>
                                 <div class="mb-4">
-                                    <h6 class="card-subtitle mb-1 fw-bold">Email</h6>
-                                    <p class="card-text" id="email"></p>
+                                    <h6 class="data-label mb-1">Email</h6>
+                                    <p class="data-text" id="email"></p>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <h6 class="card-subtitle mb-1 fw-bold">Mạng xã hội</h6>
-                                    <p class="card-text mb-1">
-                                        <i class="bi bi-facebook"></i>
-                                        <span id="fb"></span><br>
-                                    </p>
-                                    <p class="card-text mb-1">
-                                        <i class="bi bi-instagram"></i>
-                                        <span id="insta"></span><br>
-                                    </p>
-                                    <p class="card-text mb-1">
-                                        <i class="bi bi-twitter"></i>
-                                        <span id="tw"></span><br>
-                                    </p>
-                                    <p class="card-text">
-                                        <i class="bi bi-linkedin"></i>
-                                        <span id="ln"></span><br>
-                                    </p>
+                                    <h6 class="data-label mb-1">Mạng xã hội</h6>
+                                    <p class="data-text mb-1"><i class="bi bi-facebook me-2"></i> <span id="fb"></span></p>
+                                    <p class="data-text mb-1"><i class="bi bi-instagram me-2"></i> <span id="insta"></span></p>
+                                    <p class="data-text mb-1"><i class="bi bi-twitter me-2"></i> <span id="tw"></span></p>
+                                    <p class="data-text"><i class="bi bi-linkedin me-2"></i> <span id="ln"></span></p>
                                 </div>
                                 <div class="mb-4">
-                                    <h6 class="card-subtitle mb-1 fw-bold">iFrame</h6>
-                                    <iframe id="iframe" class="border p-2 w-100" loading="lazy"></iframe>
+                                    <h6 class="data-label mb-1">Bản đồ (iFrame)</h6>
+                                    <iframe id="iframe" class="border rounded p-1 w-100" loading="lazy" style="height: 200px; background: #eee;"></iframe>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!--Contacts details modal-->
                 <div class="modal fade" id="contacts-s" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <form id="contacts_s_form">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Cài đặt liên hệ</h5>
+                                    <h5 class="modal-title">Cập nhật liên hệ</h5>
                                 </div>
                                 <div class="modal-body">
                                     <div class="container-fluid p-0">
@@ -179,11 +146,11 @@
                                                     <input type="text" class="form-control shadow-none" id="address_inp" name="address" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label class="form-label fw-bold">Google Map</label>
+                                                    <label class="form-label fw-bold">Google Map Link</label>
                                                     <input type="text" class="form-control shadow-none" id="gmap_inp" name="gmap" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label class="form-label fw-bold">Số điện thoại (kèm mã quốc gia)</label>
+                                                    <label class="form-label fw-bold">Số điện thoại</label>
                                                     <div class="input-group mb-3">
                                                         <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
                                                         <input type="number" class="form-control shadow-none" id="pn1_inp" name="pn1" required>
@@ -205,11 +172,11 @@
                                                         <span class="input-group-text"><i class="bi bi-facebook"></i></span>
                                                         <input type="text" class="form-control shadow-none" id="fb_inp" name="fb">
                                                     </div>
-                                                    <div class="input-group">
+                                                    <div class="input-group mb-3">
                                                         <span class="input-group-text"><i class="bi bi-instagram"></i></span>
                                                         <input type="text" class="form-control shadow-none" id="insta_inp" name="insta">
                                                     </div>
-                                                    <div class="input-group my-3">
+                                                    <div class="input-group mb-3">
                                                         <span class="input-group-text"><i class="bi bi-twitter"></i></span>
                                                         <input type="text" class="form-control shadow-none" id="tw_inp" name="tw">
                                                     </div>
@@ -219,7 +186,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label class="form-label fw-bold">iFrame</label>
+                                                    <label class="form-label fw-bold">iFrame Bản đồ</label>
                                                     <input type="text" class="form-control shadow-none" id="iframe_inp" name="iframe" required>
                                                 </div>
                                             </div>
@@ -228,31 +195,27 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" onclick="contacts_inp(contacts_data)" class="btn text-secondary shadow-none" data-bs-dismiss="modal">Thoát</button>
-                                    <button type="submit" class="btn custom-bg text-white shadow-none">OK</button>
+                                    <button type="submit" class="btn btn-custom-dark shadow-none">Lưu thay đổi</button>
                                 </div>
                             </div>
                         </form>
-                        
                     </div>
                 </div>
 
-                <!--Management Team section-->
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-3 justify-content-between">
-                            <h5 class="card-title m-0">Đội ngũ quản lý</h5>
-                            <button class="btn btn-dark btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#team-s">
-                                <i class="bi bi-plus-square"></i> Thêm
+                <div class="card dashboard-card mb-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4 justify-content-between">
+                            <h5 class="card-header-title m-0">Đội ngũ quản lý</h5>
+                            <button class="btn btn-custom-dark btn-sm shadow-none" data-bs-toggle="modal" data-bs-target="#team-s">
+                                <i class="bi bi-plus-lg me-1"></i> Thêm thành viên
                             </button>
                         </div>
                         
                         <div class="row" id="team-data">
-
-                        </div>
+                            </div>
                     </div>
                 </div>
 
-                <!--Management Team modal-->
                 <div class="modal fade" id="team-s" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <form id="team_s_form">
@@ -272,17 +235,16 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" onclick="member_name.value='', member_image.value=''" class="btn text-secondary shadow-none" data-bs-dismiss="modal">Thoát</button>
-                                    <button type="submit" class="btn custom-bg text-white shadow-none">OK</button>
+                                    <button type="submit" class="btn btn-custom-dark shadow-none">Lưu lại</button>
                                 </div>
                             </div>
                         </form>
-                        
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
-
 
     <?php require('component/scripts.php'); ?>
     <script src="scripts/settings.js"></script>

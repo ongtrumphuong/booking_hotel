@@ -1,0 +1,90 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f3f4f6;
+}
+
+/* --- Layout --- */
+#dashboard-menu {
+    position: fixed;
+    height: 100%;
+    z-index: 11;
+}
+@media screen and (max-width: 991px) {
+    #dashboard-menu {
+        height: auto;
+        width: 100%;
+    }
+    #main-content {
+        margin-top: 60px;
+    }
+}
+
+/* --- Modern Card Style --- */
+.dashboard-card {
+    background: #fff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+.dashboard-card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* --- Inputs (Search) --- */
+.search-input {
+    border-radius: 50px;
+    padding: 10px 20px;
+    border: 1px solid #d1d5db;
+    transition: all 0.3s;
+}
+.search-input:focus {
+    border-color: #111827;
+    box-shadow: 0 0 0 0.2rem rgba(17, 24, 39, 0.1);
+}
+
+/* --- Tables --- */
+.custom-table thead th {
+    background-color: #111827;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    padding: 12px;
+    white-space: nowrap;
+}
+.custom-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+.custom-table td {
+    vertical-align: middle;
+    font-size: 0.95rem;
+    color: #4b5563;
+    padding: 10px;
+}
+
+/* --- Custom Pagination --- */
+.page-link {
+    color: #111827;
+    border: 1px solid #dee2e6;
+    margin: 0 2px;
+    border-radius: 5px;
+}
+.page-link:hover {
+    background-color: #e5e7eb;
+    color: #111827;
+    border-color: #dee2e6;
+}
+.page-item.active .page-link {
+    background-color: #111827;
+    border-color: #111827;
+    color: #fff;
+}
+.page-item:first-child .page-link, .page-item:last-child .page-link {
+    border-radius: 5px;
+}
